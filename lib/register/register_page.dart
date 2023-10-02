@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:srisuntari_mobileapp/register/validate_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -10,8 +16,11 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   String namaLengkap = "";
-  DateTime tanggalLahir = DateTime.now();
+  DateTime? tanggalLahir;
   String wilayah = "";
+
+  SharedPreferences? prefs;
+  final TextEditingController namaLengkapController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -28,22 +37,28 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _pickAndUploadFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      PlatformFile file = result.files.first;
-      // Di sini, Anda dapat mengambil file yang dipilih dan mengunggahnya
-      print('Path file: ${file.path}');
-    } else {
-      // User membatalkan pemilihan file
-    }
+    // Minta pengguna untuk memilih file gambar
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
 
-    if (result != null) {
-      PlatformFile file = result.files.first;
-      // Di sini, Anda dapat mengambil file yang dipilih dan mengunggahnya
-      print('Path file: ${file.path}');
-    } else {
-      // User membatalkan pemilihan file
+    if (result != null && result.files.isNotEmpty) {
+      final File file = File(result.files.first.path!);
+
+      // Simpan path file gambar ke SharedPreferences
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('imagePath', file.path);
+
+      print('Path gambar: ${file.path}');
+
+      // Anda juga dapat mengunggah file ke server atau melakukan apa pun yang Anda butuhkan di sini
     }
+  }
+
+  Future<String> _getLocalPath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
   }
 
   List<String> daftarWilayah = [
@@ -53,7 +68,40 @@ class _RegisterPageState extends State<RegisterPage> {
     "Wilayah A (lainnya)"
   ];
 
-  // FilePickerResult? result;
+  @override
+  void initState() {
+    super.initState();
+    initSharedPreferences();
+  }
+
+  Future<void> initSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    loadSavedData();
+  }
+
+  void loadSavedData() {
+    if (prefs != null) {
+      setState(() {
+        namaLengkapController.text = prefs!.getString('namaLengkap') ?? '';
+        tanggalLahir =
+            DateTime.tryParse(prefs!.getString('tanggalLahir') ?? '');
+        wilayah = prefs!.getString('wilayah') ?? '';
+      });
+    }
+  }
+
+  Future<void> saveDataToSharedPreferences() async {
+    if (prefs != null) {
+      await prefs!.setString('tanggalLahir', tanggalLahir.toString());
+      await prefs!.setString('wilayah', wilayah);
+
+      // Tambahkan pernyataan print di sini setelah penyimpanan selesai
+      print('Data disimpan di SharedPreferences:');
+      print('Nama Lengkap: ${namaLengkapController.text}');
+      print('Tanggal Lahir: $tanggalLahir');
+      print('Wilayah: $wilayah');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +171,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           fontFamily: 'Manrope',
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 50.0,
+                              color: Colors.grey,
+                              offset: Offset(3.0, 3.0),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 8),
@@ -152,9 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 5),
                       TextFormField(
-                        onChanged: (value) {
-                          // ...
-                        },
+                        controller: namaLengkapController,
                         decoration: InputDecoration(
                           hintText: "Masukkan Nama Lengkap",
                           hintStyle: TextStyle(
@@ -207,7 +260,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Text(
                             tanggalLahir == null
                                 ? "Pilih tanggal lahir"
-                                : "${tanggalLahir.toLocal()}".split(' ')[0],
+                                : "${tanggalLahir?.toLocal()}".split(' ')[0],
                           ),
                         ),
                       ),
@@ -305,8 +358,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: MediaQuery.of(context).size.width,
                         height: 52,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // ...
+                          onPressed: () async {
+                            await saveDataToSharedPreferences();
+                            // push to ValidatePage();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ValidatePage(),
+                              ),
+                            );
                           },
                           child: Text("Lanjutkan",
                               style: TextStyle(
