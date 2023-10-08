@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
+import 'package:srisuntari_mobileapp/models/database_helper.dart';
+import 'package:srisuntari_mobileapp/models/user_data.dart';
 import 'package:srisuntari_mobileapp/register/validate_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -15,52 +13,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  String namaLengkap = "";
-  DateTime? tanggalLahir;
-  String wilayah = "";
-
-  SharedPreferences? prefs;
-  final TextEditingController namaLengkapController = TextEditingController();
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != tanggalLahir) {
-      setState(() {
-        tanggalLahir = picked;
-      });
-    }
-  }
-
-  Future<void> _pickAndUploadFile() async {
-    // Minta pengguna untuk memilih file gambar
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowMultiple: false,
-    );
-
-    if (result != null && result.files.isNotEmpty) {
-      final File file = File(result.files.first.path!);
-
-      // Simpan path file gambar ke SharedPreferences
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('imagePath', file.path);
-
-      print('Path gambar: ${file.path}');
-
-      // Anda juga dapat mengunggah file ke server atau melakukan apa pun yang Anda butuhkan di sini
-    }
-  }
-
-  Future<String> _getLocalPath() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
   List<String> daftarWilayah = [
     "Wilayah A",
     "Wilayah B",
@@ -68,38 +20,46 @@ class _RegisterPageState extends State<RegisterPage> {
     "Wilayah A (lainnya)"
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    initSharedPreferences();
-  }
+  final TextEditingController _namaLengkapController = TextEditingController();
+  final TextEditingController _tanggalLahirController = TextEditingController();
+  final TextEditingController _wilayahController = TextEditingController();
 
-  Future<void> initSharedPreferences() async {
-    prefs = await SharedPreferences.getInstance();
-    loadSavedData();
-  }
-
-  void loadSavedData() {
-    if (prefs != null) {
+  // fungsi tanggal lahir
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(), // Tanggal awal yang ditampilkan
+      firstDate: DateTime(1900), // Tanggal pertama yang dapat dipilih
+      lastDate: DateTime.now(), // Tanggal terakhir yang dapat dipilih
+    );
+    if (picked != null) {
       setState(() {
-        namaLengkapController.text = prefs!.getString('namaLengkap') ?? '';
-        tanggalLahir =
-            DateTime.tryParse(prefs!.getString('tanggalLahir') ?? '');
-        wilayah = prefs!.getString('wilayah') ?? '';
+        _tanggalLahirController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }
 
-  Future<void> saveDataToSharedPreferences() async {
-    if (prefs != null) {
-      await prefs!.setString('tanggalLahir', tanggalLahir.toString());
-      await prefs!.setString('wilayah', wilayah);
+  DatabaseHelper dbHelper = DatabaseHelper();
 
-      // Tambahkan pernyataan print di sini setelah penyimpanan selesai
-      print('Data disimpan di SharedPreferences:');
-      print('Nama Lengkap: ${namaLengkapController.text}');
-      print('Tanggal Lahir: $tanggalLahir');
-      print('Wilayah: $wilayah');
+  Future<int> addUser() async {
+    UserData userData = UserData(
+      name: _namaLengkapController.text,
+      tanggalLahir: DateTime.parse(_tanggalLahirController.text),
+      wilayah: _wilayahController.text,
+    );
+    int result = await dbHelper.insertUserdata(userData);
+    return result;
+  }
+
+  void _onPressed() async {
+    int result = await addUser();
+    if (result > 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ValidatePage(),
+        ),
+      );
     }
   }
 
@@ -207,7 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 5),
                       TextFormField(
-                        controller: namaLengkapController,
+                        controller: _namaLengkapController,
                         decoration: InputDecoration(
                           hintText: "Masukkan Nama Lengkap",
                           hintStyle: TextStyle(
@@ -257,10 +217,18 @@ class _RegisterPageState extends State<RegisterPage> {
                             contentPadding:
                                 EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           ),
-                          child: Text(
-                            tanggalLahir == null
-                                ? "Pilih tanggal lahir"
-                                : "${tanggalLahir?.toLocal()}".split(' ')[0],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                _tanggalLahirController.text,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -295,8 +263,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.black,
                               fontSize: 15,
                             ),
-                            value: wilayah.isNotEmpty ? wilayah : null,
                             hint: Text("Pilih Wilayah"),
+                            value: _wilayahController.text.isEmpty
+                                ? null
+                                : _wilayahController.text,
                             isExpanded: true,
                             items: daftarWilayah.map((String value) {
                               return DropdownMenuItem(
@@ -306,7 +276,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             }).toList(),
                             onChanged: (value) {
                               setState(() {
-                                wilayah = value.toString();
+                                _wilayahController.text = value.toString();
                               });
                             },
                           ),
@@ -331,9 +301,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       // field upload foto file picker
                       GestureDetector(
-                        onTap: () {
-                          _pickAndUploadFile();
-                        },
+                        onTap: () {},
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           height: 50,
@@ -359,26 +327,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 52,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await saveDataToSharedPreferences();
-                            // push to ValidatePage();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ValidatePage(),
-                              ),
-                            );
+                            _onPressed();
                           },
-                          child: Text("Lanjutkan",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF6B81DE),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                          ),
+                          child: Text('Simpan'),
                         ),
                       ),
                     ],
@@ -388,5 +339,13 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ],
         ));
+  }
+
+  @override
+  void dispose() {
+    _namaLengkapController.dispose();
+    _tanggalLahirController.dispose();
+    _wilayahController.dispose();
+    super.dispose();
   }
 }
