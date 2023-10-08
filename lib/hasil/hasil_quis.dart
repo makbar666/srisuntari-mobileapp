@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:srisuntari_mobileapp/hasil/review_quis.dart';
+import 'package:srisuntari_mobileapp/quiz/class/quizt_braind.dart';
 
 class HasilQuis extends StatelessWidget {
-  const HasilQuis({super.key, required this.nilai});
+  const HasilQuis({super.key, required this.nilai, required this.quizBrain});
   final int nilai;
+  final QuizBrain quizBrain;
 
   @override
   Widget build(BuildContext context) {
@@ -232,7 +235,13 @@ class HasilQuis extends StatelessWidget {
                               height: 52,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  //Belum Ada
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ReviewQuiz(
+                                      quizBrain: quizBrain,
+                                      nilai: nilai,
+                                    );
+                                  }));
                                 },
                                 child: Text("Unduh Hasil",
                                     style: TextStyle(
