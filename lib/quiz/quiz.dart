@@ -3,6 +3,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:srisuntari_mobileapp/components/costum_button.dart';
 import 'package:srisuntari_mobileapp/hasil/hasil_quis.dart';
+import 'package:srisuntari_mobileapp/hasil/review_quis.dart';
 import 'package:srisuntari_mobileapp/quiz/class/quizt_braind.dart';
 
 class quiz extends StatefulWidget {
@@ -14,12 +15,13 @@ class quiz extends StatefulWidget {
 
 class _quizState extends State<quiz> {
   int nilai = 0;
-  int totalQuestions = 0;
+  int totalQuestions = 1;
   QuizBrain quizBrain = QuizBrain();
 
   //cek jawaban mungkin
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
+    // Simpan pertanyaan yang dikerjakan
 
     setState(() {
       //TODO: Step 4 - Use IF/ELSE to check if we've reached the end of the quiz. If so,
@@ -48,6 +50,7 @@ class _quizState extends State<quiz> {
         } else {
           // Nilai tidak ada
         }
+        quizBrain.checksoal(userPickedAnswer);
         totalQuestions++; // Tambahkan 1 ke total pertanyaan yang sudah dijawab.
         quizBrain.nextQuestion();
       }
@@ -201,7 +204,7 @@ class _quizState extends State<quiz> {
                     } else {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return HasilQuis(nilai: nilai);
+                        return HasilQuis(quizBrain: quizBrain, nilai: nilai);
                       }));
                     }
                   },
