@@ -12,18 +12,11 @@ class DatabaseHelper {
     String path = await getDatabasesPath();
     return openDatabase(
       join(path, 'userdata.db'),
-      version: 2, // Sesuaikan dengan versi database yang benar
+      version: 1,
       onCreate: (Database db, int version) async {
         await db.execute(
-          "CREATE TABLE userdata(name TEXT)",
+          "CREATE TABLE userdata(name TEXT, tanggalLahir TEXT, wilayah TEXT)",
         );
-      },
-      onUpgrade: (Database db, int oldVersion, int newVersion) async {
-        // Tambahkan perintah SQL untuk mengubah skema tabel di sini
-        if (oldVersion < 2) {
-          await db.execute(
-              "ALTER TABLE userdata ADD COLUMN tanggalLahir TEXT, wilayah TEXT");
-        }
       },
     );
   }
@@ -41,7 +34,6 @@ class DatabaseHelper {
     Map<String, dynamic> data = {
       'name': userdata.name,
       'tanggalLahir': formattedDate, // Simpan sebagai teks
-      'wilayah': userdata.wilayah, // Tambahkan kolom wilayah
     };
 
     result = await db.insert('userdata', data);

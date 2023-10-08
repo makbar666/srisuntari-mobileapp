@@ -2,6 +2,8 @@ import 'question.dart';
 
 class QuizBrain {
   int _questionNumber = 0;
+  List<String> userQuestions = [];
+  List<bool> userAnswers = [];
 
   List<Question> _questionBank = [
     Question('Apakah Appank Tanvan', true),
@@ -12,7 +14,6 @@ class QuizBrain {
     Question('Apakah Baso Tanvan', true),
     Question('Apakah Miftahul Tanvan', true),
     Question('Apakah Riyan Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
     Question('Apakah Luis Tanvan', true),
     Question('Apakah Luis Tanvan', true),
     Question('Apakah Luis Tanvan', true),
@@ -54,8 +55,24 @@ class QuizBrain {
     }
   }
 
+// Metode untuk memproses jawaban pengguna
+  void checksoal(bool userPickedAnswer) {
+    // ...
+
+    // Simpan pertanyaan yang dikerjakan
+    userQuestions.add(_questionBank[_questionNumber].questionText);
+
+    // Simpan jawaban pengguna
+    userAnswers.add(userPickedAnswer);
+
+    // ...
+  }
+
+// Metode untuk mengatur ulang kuis
   //TODO: Step 4 part B - Create a reset() method here that sets the questionNumber back to 0.
   void reset() {
     _questionNumber = 0;
+    // userQuestions.clear();
+    // userAnswers.clear();
   }
 }
