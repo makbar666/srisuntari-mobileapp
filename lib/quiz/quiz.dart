@@ -18,40 +18,22 @@ class _quizState extends State<quiz> {
   int totalQuestions = 1;
   QuizBrain quizBrain = QuizBrain();
 
-  //cek jawaban mungkin
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
-    // Simpan pertanyaan yang dikerjakan
 
     setState(() {
-      //TODO: Step 4 - Use IF/ELSE to check if we've reached the end of the quiz. If so,
-      //On the next line, you can also use if (quizBrain.isFinished()) {}, it does the same thing.
       if (quizBrain.isFinished() == true) {
-        //TODO Step 4 Part A - show an alert using rFlutter_alert,
-
-        //This is the code for the basic alert from the docs for rFlutter Alert:
-        //Alert(context: context, title: "RFLUTTER", desc: "Flutter is awesome.").show();
-
-        //Modified for our purposes:
         Alert(
           context: context,
           title: 'Finished!',
           desc: 'Data Sudah di Jawab Semua, Silahkan Klik Berikutnya:)',
         ).show();
-
-        //TODO Step 4 Part C - reset the questionNumber,
-        // quizBrain.reset();
-      }
-
-      //TODO: Step 6 - If we've not reached the end, ELSE do the answer checking steps below 👇
-      else {
+      } else {
         if (userPickedAnswer == correctAnswer) {
-          nilai++; // Tambahkan 1 ke Nilai jika jawaban benar.
-        } else {
-          // Nilai tidak ada
-        }
+          nilai++;
+        } else {}
         quizBrain.checksoal(userPickedAnswer);
-        totalQuestions++; // Tambahkan 1 ke total pertanyaan yang sudah dijawab.
+        totalQuestions++;
         quizBrain.nextQuestion();
       }
     });

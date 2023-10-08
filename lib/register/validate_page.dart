@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/user_data.dart';
+import 'package:srisuntari_mobileapp/quiz/mulai_quiz_page.dart';
 
 class ValidatePage extends StatefulWidget {
   const ValidatePage({super.key});
@@ -185,8 +186,8 @@ class _ValidatePageState extends State<ValidatePage> {
                                             fontWeight: FontWeight.w600,
                                           )),
                                       Spacer(),
-                                      Text(userData?.wilayah ??
-                                          'Distrik / Wilayah Tidak Tersedia'),
+                                      // Text(userData?.wilayah ??
+                                      //     'Distrik / Wilayah Tidak Tersedia'),
                                     ],
                                   ),
                                   SizedBox(height: 16),
@@ -201,17 +202,38 @@ class _ValidatePageState extends State<ValidatePage> {
                                     ],
                                   ),
                                   SizedBox(height: 32),
-                                  // image dari path gambar
-                                  // Container(
-                                  //   width: 50,
-                                  //   height: 50,
-                                  //   child: gambarPath != null
-                                  //       ? Image.file(
-                                  //           File(gambarPath!),
-                                  //           fit: BoxFit.cover,
-                                  //         )
-                                  //       : Placeholder(),
-                                  // )
+                                  // button lanjut ke halaman berikutnya
+                                  Container(
+                                    width: double.infinity,
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        // Menuju mulai_quiz_page.dart
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MulaiQuiz()),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Lanjut",
+                                        style: TextStyle(
+                                          fontFamily: 'Manrope',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFF6B81DE),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               );
                             }

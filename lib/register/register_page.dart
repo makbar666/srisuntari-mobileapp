@@ -45,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
     UserData userData = UserData(
       name: _namaLengkapController.text,
       tanggalLahir: DateTime.parse(_tanggalLahirController.text),
-      wilayah: _wilayahController.text,
+      // wilayah: _wilayahController.text,
     );
     int result = await dbHelper.insertUserdata(userData);
     return result;

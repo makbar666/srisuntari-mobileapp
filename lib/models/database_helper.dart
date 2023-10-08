@@ -4,19 +4,24 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'user_data.dart'; // Mengimpor model UserData
+import 'user_data.dart';
 
 class DatabaseHelper {
   Future<Database> initializedDB() async {
     String path = await getDatabasesPath();
     return openDatabase(
       join(path, 'userdata.db'),
-      version: 1,
+      version: 2,
       onCreate: (Database db, int version) async {
         await db.execute(
-          "CREATE TABLE userdata(name TEXT, tanggalLahir TEXT, wilayah TEXT)",
+          "CREATE TABLE userdata(name TEXT)",
         );
+      },
+      onUpgrade: (Database db, int oldVersion, int newVersion) async {
+        // Tambahkan perintah SQL untuk mengubah skema tabel di sini
+        if (oldVersion < 2) {
+          await db.execute("ALTER TABLE userdata ADD COLUMN tanggalLahir TEXT");
+        }
       },
     );
   }
@@ -25,7 +30,6 @@ class DatabaseHelper {
     int result = 0;
     final Database db = await initializedDB();
 
-    // Hapus data yang ada sebelum menambah yang baru
     await deleteUserdata();
 
     String formattedDate =
@@ -33,7 +37,7 @@ class DatabaseHelper {
 
     Map<String, dynamic> data = {
       'name': userdata.name,
-      'tanggalLahir': formattedDate, // Simpan sebagai teks
+      'tanggalLahir': formattedDate,
     };
 
     result = await db.insert('userdata', data);
@@ -45,6 +49,16 @@ class DatabaseHelper {
     final List<Map<String, Object?>> queryResult = await db.query('userdata');
     if (queryResult.isNotEmpty) {
       return UserData.fromMap(queryResult.first);
+    } else {
+      return null;
+    }
+  }
+
+  Future<DateTime?> retrieveTanggalLahir() async {
+    final Database db = await initializedDB();
+    final List<Map<String, Object?>> queryResult = await db.query('userdata');
+    if (queryResult.isNotEmpty) {
+      return DateTime.parse(queryResult.first['tanggalLahir'] as String);
     } else {
       return null;
     }

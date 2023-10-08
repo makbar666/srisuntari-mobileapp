@@ -1,53 +1,59 @@
+import 'package:srisuntari_mobileapp/models/database_helper.dart';
+
 import 'question.dart';
 
 class QuizBrain {
   int _questionNumber = 0;
+  int umur = 0; // Properti umur
+
+  late final DatabaseHelper dbHelper;
+
   List<String> userQuestions = [];
   List<bool> userAnswers = [];
 
-  List<Question> _questionBank = [
-    Question('Apakah Appank Tanvan', true),
-    Question('Apakah Akbar Tanvan.', true),
-    Question('Apakah Cafrial Tanvan', true),
-    Question('Apakah Haerul Tanvan', true),
-    Question('Apakah Ode Tanvan', true),
-    Question('Apakah Baso Tanvan', true),
-    Question('Apakah Miftahul Tanvan', true),
-    Question('Apakah Riyan Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
+  List<Question> _pertanyaanUmurKurangDari5Bulan = [
+    Question('Pertanyaan 1 untuk umur kurang dari 5 bulan', true),
+    Question('Pertanyaan 2 untuk umur kurang dari 5 bulan', true),
+    Question('Pertanyaan 3 untuk umur kurang dari 5 bulan', true),
+    Question('Pertanyaan 4 untuk umur kurang dari 5 bulan', true),
+    Question('Pertanyaan 5 untuk umur kurang dari 5 bulan', true),
+    Question('Pertanyaan 6 untuk umur kurang dari 5 bulan', true),
   ];
 
+  List<Question> _pertanyaanUmurDiAtas5Bulan = [
+    Question('Pertanyaan 1 untuk umur di atas 5 bulan', true),
+    Question('Pertanyaan 2 untuk umur di atas 5 bulan', true),
+    Question('Pertanyaan 3 untuk umur di atas 5 bulan', true),
+    Question('Pertanyaan 4 untuk umur di atas 5 bulan', true),
+    Question('Pertanyaan 5 untuk umur di atas 5 bulan', true),
+    Question('Pertanyaan 6 untuk umur di atas 5 bulan', true),
+  ];
+
+  List<Question> get currentQuestions {
+    return (umur < 5)
+        ? _pertanyaanUmurKurangDari5Bulan
+        : _pertanyaanUmurDiAtas5Bulan;
+  }
+
   void nextQuestion() {
-    if (_questionNumber < _questionBank.length - 1) {
+    if (_questionNumber < currentQuestions.length - 1) {
       _questionNumber++;
     }
   }
 
   String getQuestionText() {
-    return _questionBank[_questionNumber].questionText;
+    // Pastikan umur diatur sebelum mengambil pertanyaan
+    setUmurFromTanggalLahir(DateTime
+        .now()); // Ganti dengan tanggal lahir yang diambil dari database
+    return currentQuestions[_questionNumber].questionText;
   }
 
   bool getCorrectAnswer() {
-    return _questionBank[_questionNumber].questionAnswer;
+    return currentQuestions[_questionNumber].questionAnswer;
   }
 
-  //TODO: Step 3 Part A - Create a method called isFinished() here that checks to see if we have reached the last question. It should return (have an output) true if we've reached the last question and it should return false if we're not there yet.
-
   bool isFinished() {
-    if (_questionNumber >= _questionBank.length - 1) {
-      //TODO: Step 3 Part B - Use a print statement to check that isFinished is returning true when you are indeed at the end of the quiz and when a restart should happen.
-
+    if (_questionNumber >= currentQuestions.length - 1) {
       print('Now returning true');
       return true;
     } else {
@@ -55,24 +61,35 @@ class QuizBrain {
     }
   }
 
-// Metode untuk memproses jawaban pengguna
   void checksoal(bool userPickedAnswer) {
-    // ...
-
-    // Simpan pertanyaan yang dikerjakan
-    userQuestions.add(_questionBank[_questionNumber].questionText);
-
-    // Simpan jawaban pengguna
+    userQuestions.add(currentQuestions[_questionNumber].questionText);
     userAnswers.add(userPickedAnswer);
-
-    // ...
+    print('aasdadsadasa');
   }
 
-// Metode untuk mengatur ulang kuis
-  //TODO: Step 4 part B - Create a reset() method here that sets the questionNumber back to 0.
   void reset() {
     _questionNumber = 0;
-    // userQuestions.clear();
-    // userAnswers.clear();
+  }
+
+  // Fungsi untuk mengatur umur dari tanggal lahir
+  void setUmurFromTanggalLahir(DateTime tanggalLahir) {
+    final now = DateTime.now();
+    final difference = now.difference(tanggalLahir);
+    umur = difference.inDays ~/ 30; // Menghitung umur dalam bulan
+  }
+
+  // Metode untuk memulai permainan
+  void startGame() async {
+    final tanggalLahirDariDatabase = await _retrieveTanggalLahir();
+    if (tanggalLahirDariDatabase != null) {
+      print('Tanggal Lahir dari Database: $tanggalLahirDariDatabase');
+      setUmurFromTanggalLahir(tanggalLahirDariDatabase);
+    }
+    _questionNumber = 0;
+  }
+
+  Future<DateTime?> _retrieveTanggalLahir() async {
+    final tanggalLahirDariDatabase = await dbHelper.retrieveTanggalLahir();
+    return tanggalLahirDariDatabase;
   }
 }
