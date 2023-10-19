@@ -4,7 +4,12 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:srisuntari_mobileapp/components/costum_button.dart';
 import 'package:srisuntari_mobileapp/hasil/hasil_quis.dart';
 import 'package:srisuntari_mobileapp/hasil/review_quis.dart';
+import 'package:srisuntari_mobileapp/models/database_helper.dart';
+import 'package:srisuntari_mobileapp/models/user_data.dart';
 import 'package:srisuntari_mobileapp/quiz/class/quizt_braind.dart';
+import 'package:flutter/material.dart';
+
+import '../models/quiz_result.dart';
 
 class quiz extends StatefulWidget {
   const quiz({super.key});
@@ -14,6 +19,7 @@ class quiz extends StatefulWidget {
 }
 
 class _quizState extends State<quiz> {
+  final dbHelper = DatabaseHelper();
   int nilai = 0;
   int totalQuestions = 1;
   QuizBrain quizBrain = QuizBrain();
@@ -22,20 +28,38 @@ class _quizState extends State<quiz> {
     bool correctAnswer = quizBrain.getCorrectAnswer();
 
     setState(() {
-      if (quizBrain.isFinished() == true) {
+      if (quizBrain.isFinished()) {
+        // Skor kuis telah selesai, simpan ke dalam database
+        QuizResult quizResult = QuizResult(
+          score: nilai,
+          date: DateTime.now().toIso8601String(),
+        );
+
+        dbHelper.saveQuizResult(quizResult);
+
+        printQuizfromDB();
+
         Alert(
           context: context,
-          title: 'Finished!',
-          desc: 'Data Sudah di Jawab Semua, Silahkan Klik Berikutnya:)',
+          title: 'Selesai!',
+          desc:
+              'Kamu Telah Menyelesaikan Kuis Silahkan Tekan Tombol Selesai Untuk Melihat Hasil Kuis',
         ).show();
       } else {
         if (userPickedAnswer == correctAnswer) {
           nilai++;
-        } else {}
+        }
         quizBrain.checksoal(userPickedAnswer);
         totalQuestions++;
         quizBrain.nextQuestion();
       }
+    });
+  }
+
+  void printQuizfromDB() async {
+    List<QuizResult> quizResults = await dbHelper.getAllQuizResults();
+    quizResults.forEach((quizResult) {
+      print(quizResult.toMap());
     });
   }
 
@@ -50,7 +74,6 @@ class _quizState extends State<quiz> {
             left: 0,
             right: 0,
             child: Container(
-              // alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(left: 32.0, top: 52.0, right: 32.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -59,7 +82,25 @@ class _quizState extends State<quiz> {
                     children: [
                       InkWell(
                         onTap: () {
-                          Navigator.pop(context);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Maaf, Kuis Anda Belum Selesai'),
+                                content: Text(
+                                    'Anda harus menyelesaikan kuis sebelum keluar.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Tutup dialog
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         child: Icon(
                           Icons.arrow_back,
@@ -132,34 +173,34 @@ class _quizState extends State<quiz> {
               ),
               child: Padding(
                 padding: EdgeInsets.all(32.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      quizBrain.getQuestionText(),
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        quizBrain.getQuestionText(),
+                        style: TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    CostumButton(
-                      text: 'A. Iya',
-                      onTap: () {
-                        //The user picked true.
-                        checkAnswer(true);
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    CostumButton(
-                      text: 'B. Tidak',
-                      onTap: () {
-                        //The user picked false.
-                        checkAnswer(false);
-                      },
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      CustomButton(
+                        text: 'Iya',
+                        onTap: () {
+                          checkAnswer(true);
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      CustomButton(
+                        text: 'Tidak',
+                        onTap: () {
+                          checkAnswer(false);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -173,24 +214,16 @@ class _quizState extends State<quiz> {
                 width: MediaQuery.of(context).size.width,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (!quizBrain.isFinished()) {
-                      // Jika kuis belum selesai
-                      // Tambahkan aksi yang ingin Anda lakukan saat tombol ditekan di sini
-
-                      Alert(
-                        context: context,
-                        title: 'Opss!!',
-                        desc: 'Selesaikan ki Dulu  Quiznya Bro',
-                      ).show();
-                    } else {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return HasilQuis(quizBrain: quizBrain, nilai: nilai);
-                      }));
-                    }
-                  },
-                  child: Text("Berikutnya",
+                  onPressed: quizBrain.isFinished()
+                      ? () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return HasilQuis(
+                                quizBrain: quizBrain, nilai: nilai);
+                          }));
+                        }
+                      : null,
+                  child: Text("Selesai",
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -208,6 +241,35 @@ class _quizState extends State<quiz> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class RoundedButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onTap;
+
+  RoundedButton({required this.text, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius:
+              BorderRadius.circular(20.0), // Sesuaikan radius sesuai keinginan
+          color: Colors.blue, // Sesuaikan warna latar belakang sesuai keinginan
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white, // Sesuaikan warna teks sesuai keinginan
+            fontSize: 18,
+          ),
+        ),
       ),
     );
   }

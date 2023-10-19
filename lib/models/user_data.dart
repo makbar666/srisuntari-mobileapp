@@ -1,14 +1,53 @@
+import 'package:intl/intl.dart';
+
 class UserData {
-  late final String name;
-  late final DateTime tanggalLahir;
+  int? id;
+  String nama;
+  DateTime? tanggalLahir;
+  String? jenisKelamin;
+  String? puskesmas;
+  int? nilai;
 
-  UserData({required this.name, required this.tanggalLahir});
+  UserData({
+    this.id,
+    required this.nama,
+    this.tanggalLahir,
+    this.jenisKelamin,
+    this.puskesmas,
+  });
 
-  UserData.fromMap(Map<String, dynamic> result)
-      : name = result['name'],
-        tanggalLahir = DateTime.parse(result['tanggalLahir']);
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nama': nama,
+      'tanggal_lahir': tanggalLahir?.toIso8601String(),
+      'jenisKelamin': jenisKelamin,
+      'puskesmas': puskesmas,
+    };
+  }
 
-  Map<String, Object> toMap() {
-    return {'name': name, 'tanggalLahir': tanggalLahir.toIso8601String()};
+  static const String dateFormat = 'yyyy-MM-dd';
+
+  static UserData fromMap(Map<String, dynamic> map) {
+    try {
+      final dateFormatter = DateFormat(dateFormat);
+      final dateFormatted = dateFormatter.parse(map['tanggal_lahir']);
+
+      return UserData(
+        id: map['id'],
+        nama: map['nama'],
+        tanggalLahir: dateFormatted,
+        jenisKelamin: map['jenisKelamin'],
+        puskesmas: map['puskesmas'],
+      );
+    } catch (e) {
+      return UserData(
+        id: map['id'],
+        nama: map['nama'],
+        tanggalLahir: null,
+        jenisKelamin: map['jenis_kelamin'],
+        puskesmas: map['puskesmas'],
+      );
+    }
   }
 }

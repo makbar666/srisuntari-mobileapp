@@ -1,71 +1,86 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:intl/intl.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'package:srisuntari_mobileapp/models/quiz_result.dart';
+
 import 'user_data.dart';
 
 class DatabaseHelper {
-  Future<Database> initializedDB() async {
-    String path = await getDatabasesPath();
-    return openDatabase(
-      join(path, 'userdata.db'),
-      version: 2,
-      onCreate: (Database db, int version) async {
-        await db.execute(
-          "CREATE TABLE userdata(name TEXT)",
-        );
-      },
-      onUpgrade: (Database db, int oldVersion, int newVersion) async {
-        // Tambahkan perintah SQL untuk mengubah skema tabel di sini
-        if (oldVersion < 2) {
-          await db.execute("ALTER TABLE userdata ADD COLUMN tanggalLahir TEXT");
-        }
-      },
-    );
+  static final DatabaseHelper _instance = DatabaseHelper.internal();
+  factory DatabaseHelper() => _instance;
+
+  static Database? _db;
+
+  Future<Database> get db async {
+    if (_db != null) {
+      return _db!;
+    }
+    _db = await initDb();
+    return _db!;
   }
 
-  Future<int> insertUserdata(UserData userdata) async {
-    int result = 0;
-    final Database db = await initializedDB();
+  DatabaseHelper.internal();
 
-    await deleteUserdata();
+  Future<Database> initDb() async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'contacts.db');
 
-    String formattedDate =
-        DateFormat('yyyy-MM-dd').format(userdata.tanggalLahir);
-
-    Map<String, dynamic> data = {
-      'name': userdata.name,
-      'tanggalLahir': formattedDate,
-    };
-
-    result = await db.insert('userdata', data);
-    return result;
+    var db = await openDatabase(path,
+        version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
+    return db;
   }
 
-  Future<UserData?> retrieveUserdata() async {
-    final Database db = await initializedDB();
-    final List<Map<String, Object?>> queryResult = await db.query('userdata');
-    if (queryResult.isNotEmpty) {
-      return UserData.fromMap(queryResult.first);
-    } else {
-      return null;
+  void _onCreate(Database db, int version) async {
+    await db.execute('''
+        CREATE TABLE contacts 
+        (id INTEGER PRIMARY KEY,
+        nama TEXT, 
+        tanggal_lahir TEXT,
+        jenisKelamin TEXT,
+        puskesmas TEXT,)
+    ''');
+
+    await db.execute('''
+        CREATE TABLE quiz_results 
+        (id INTEGER PRIMARY KEY,
+        score INTEGER,
+        date TEXT)
+    ''');
+  }
+
+  void _onUpgrade(Database db, int oldVersion, int newVersion) {
+    if (oldVersion < 2) {
+      // Jika versi sebelumnya kurang dari 2, tambahkan tabel quiz_results
+      db.execute('''
+        CREATE TABLE quiz_results 
+        (id INTEGER PRIMARY KEY,
+        score INTEGER,
+        date TEXT)
+    ''');
     }
   }
 
-  Future<DateTime?> retrieveTanggalLahir() async {
-    final Database db = await initializedDB();
-    final List<Map<String, Object?>> queryResult = await db.query('userdata');
-    if (queryResult.isNotEmpty) {
-      return DateTime.parse(queryResult.first['tanggalLahir'] as String);
-    } else {
-      return null;
-    }
+  Future<int> saveContact(UserData contact) async {
+    var dbClient = await db;
+    await dbClient.delete('contacts', where: '1=1');
+    int id = await dbClient.insert('contacts', contact.toMap());
+    return id;
   }
 
-  Future<void> deleteUserdata() async {
-    final Database db = await initializedDB();
-    await db.delete('userdata');
+  Future<List<UserData>> getAllContacts() async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> maps = await dbClient.query('contacts');
+    return maps.map((map) => UserData.fromMap(map)).toList();
+  }
+
+  Future<int> saveQuizResult(QuizResult quizResult) async {
+    var dbClient = await db;
+    int id = await dbClient.insert('quiz_results', quizResult.toMap());
+    return id;
+  }
+
+  Future<List<QuizResult>> getAllQuizResults() async {
+    var dbClient = await db;
+    List<Map<String, dynamic>> maps = await dbClient.query('quiz_results');
+    return maps.map((map) => QuizResult.fromMap(map)).toList();
   }
 }

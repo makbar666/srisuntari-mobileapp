@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:srisuntari_mobileapp/hasil/hasil_quis.dart';
-import 'package:srisuntari_mobileapp/hasil/review_quis.dart';
-import 'package:srisuntari_mobileapp/quiz/mulai_quiz_page.dart';
-import 'package:srisuntari_mobileapp/quiz/quiz.dart';
 import 'package:srisuntari_mobileapp/register/register_page.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
   runApp(const MyApp());
