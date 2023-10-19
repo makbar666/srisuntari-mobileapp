@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:srisuntari_mobileapp/quiz/quiz.dart';
 
-
 class MulaiQuiz extends StatelessWidget {
   const MulaiQuiz({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Color(0xFF6B81DE),
       body: Stack(
@@ -81,20 +79,20 @@ class MulaiQuiz extends StatelessWidget {
                       "Persyaratan Kuis",
                       style: TextStyle(
                         fontFamily: 'Manrope',
-                        fontSize: 28,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    // SizedBox(height: 2),
                     Text(
                       "Silahkan Periksa Kembali Data Kamu",
                       style: TextStyle(
                         fontFamily: 'Manrope',
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 16),
                     Container(
                       width: double.infinity, // Mengatur lebar menjadi penuh
                       height: 70.0, // Tinggi kontainer

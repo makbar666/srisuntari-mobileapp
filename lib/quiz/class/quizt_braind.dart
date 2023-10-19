@@ -6,26 +6,41 @@ class QuizBrain {
   List<bool> userAnswers = [];
 
   List<Question> _questionBank = [
-    Question('Apakah Appank Tanvan', true),
-    Question('Apakah Akbar Tanvan.', true),
-    Question('Apakah Cafrial Tanvan', true),
-    Question('Apakah Haerul Tanvan', true),
-    Question('Apakah Ode Tanvan', true),
-    Question('Apakah Baso Tanvan', true),
-    Question('Apakah Miftahul Tanvan', true),
-    Question('Apakah Riyan Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
-    Question('Apakah Luis Tanvan', true),
+    Question('Apakah anak anda lahir di fasilitas pelayanan kesehatan?', true),
+    Question('Apakah anak anda memiliki akta kelahiran ?', true),
+    Question(
+        'Apakah berat badan anak saat lahir berkisar 2,5 s/d 3,9 kg ?', true),
+    Question('Apakah panjang badan anak saat lahir berkisar 46,1 s/d 55,6 cm ?',
+        true),
+    Question(
+        'Apakah ukuran lingkar kepala anak saat lahir berkisar 31,9 s/d 37,0 cm?',
+        true),
+    Question('Apakah anak anda sudah di imunisasi BCG dan OPV1 ?', true),
+    Question('Apakah anak anda hanya memperoleh ASI saja ?', true),
+    Question(
+        'Apakah anak anda berkunjung ke fasilitas kesehatan setiap bulan (posyandu dan puskesmas) ',
+        true),
+    Question(
+        'Apakah Anda memberikan Makanan/ASI kepada anak sebanyak 8 sampai 12 kali sehari ?',
+        true),
+    Question(
+        'Dimana ibu biasa membuang sampah Ganti – Apakah Anda membuang sampah di tempat sampah yang disediakan pemerintah atau galian pembakaran sampah yang jauh dari rumah ?',
+        true),
+    Question(
+        'Apakah di Rumah Anda memiliki tempat sampah yang tertutup ?  ', true),
+    Question(
+        'Apakah  Anak pernah menderita sakit batuk, pilek dan demam dalam 6 bulan terakhir? Jika Ya apakah Anda membawa Anak Anda ke Fasilitas Kesehatan seperti Puskesmas/ RSUD/ Klinik ?',
+        true),
+    Question(
+        'Apakah anak sering mengalami diare, demam, sakit perut dan penurunan nafsu makan dan berobat di mana ?',
+        true),
+    // Question('Apakah Luis Tanvan', true),
+    // Question('Apakah Luis Tanvan', true),
+    // Question('Apakah Luis Tanvan', true),
+    // Question('Apakah Luis Tanvan', true),
+    // Question('Apakah Luis Tanvan', true),
+    // Question('Apakah Luis Tanvan', true),
+    // Question('Apakah Luis Tanvan', true),
   ];
 
   void nextQuestion() {
@@ -42,12 +57,8 @@ class QuizBrain {
     return _questionBank[_questionNumber].questionAnswer;
   }
 
-  //TODO: Step 3 Part A - Create a method called isFinished() here that checks to see if we have reached the last question. It should return (have an output) true if we've reached the last question and it should return false if we're not there yet.
-
   bool isFinished() {
     if (_questionNumber >= _questionBank.length - 1) {
-      //TODO: Step 3 Part B - Use a print statement to check that isFinished is returning true when you are indeed at the end of the quiz and when a restart should happen.
-
       print('Now returning true');
       return true;
     } else {
@@ -55,24 +66,12 @@ class QuizBrain {
     }
   }
 
-// Metode untuk memproses jawaban pengguna
   void checksoal(bool userPickedAnswer) {
-    // ...
-
-    // Simpan pertanyaan yang dikerjakan
     userQuestions.add(_questionBank[_questionNumber].questionText);
-
-    // Simpan jawaban pengguna
     userAnswers.add(userPickedAnswer);
-
-    // ...
   }
 
-// Metode untuk mengatur ulang kuis
-  //TODO: Step 4 part B - Create a reset() method here that sets the questionNumber back to 0.
   void reset() {
     _questionNumber = 0;
-    // userQuestions.clear();
-    // userAnswers.clear();
   }
 }

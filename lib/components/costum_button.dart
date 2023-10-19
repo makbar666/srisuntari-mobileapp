@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 
-class CostumButton extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String text;
   final Function()? onTap;
-  const CostumButton({super.key, required this.text, required this.onTap});
+
+  const CustomButton({Key? key, required this.text, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      splashColor: Colors.black, // Warna efek "splash" saat sentuhan
+      splashColor: Colors.black, // Warna efek "splash" saat disentuh
       highlightColor: Colors.green, // Warna saat widget ditekan
+      customBorder: RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.circular(8.0), // Atur radius sesuai keinginan Anda
+      ),
       child: Container(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(14.0),
         decoration: BoxDecoration(
           color: Colors.grey.shade100,
           border: Border.all(
@@ -29,7 +35,7 @@ class CostumButton extends StatelessWidget {
               fontFamily: 'Manrope',
               color: Colors.black54,
               fontWeight: FontWeight.bold,
-              fontSize: 22,
+              fontSize: 18,
             ),
           ),
         ),
