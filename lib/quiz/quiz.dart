@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:srisuntari_mobileapp/components/costum_button.dart';
@@ -127,14 +128,14 @@ class _quizState extends State<quiz> {
                     height: 20,
                   ),
                   LinearPercentIndicator(
-                    animation: false,
-                    animationDuration: 1000,
+                    animation: true,
+                    animationDuration: 800,
                     lineHeight: 15,
                     percent: totalQuestions / 20,
                     barRadius: Radius.circular(10.0),
                     progressColor: Colors.orange,
                     backgroundColor: Colors.deepOrange.shade100,
-                  ),
+                  ).animate().fade(),
                   SizedBox(
                     height: 10,
                   ),
@@ -143,8 +144,7 @@ class _quizState extends State<quiz> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        '$totalQuestions / 20', // Menampilkan skor dan total pertanyaan yang sudah dijawab.
-                        // '3/20', // Ganti dengan teks Anda
+                        '10',
                         style: TextStyle(
                           fontFamily: 'Manrope',
                           fontSize: 22,

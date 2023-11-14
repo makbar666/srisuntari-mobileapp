@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:srisuntari_mobileapp/models/quiz_result.dart';
@@ -82,5 +83,49 @@ class DatabaseHelper {
     var dbClient = await db;
     List<Map<String, dynamic>> maps = await dbClient.query('quiz_results');
     return maps.map((map) => QuizResult.fromMap(map)).toList();
+  }
+
+  Future<String> getGender() async {
+    var dbClient = await db;
+
+    try {
+      List<Map<String, dynamic>> result =
+          await dbClient.query('contacts', columns: ['jenisKelamin']);
+
+      if (result.isNotEmpty) {
+        return result[0]['jenisKelamin'] as String;
+      } else {
+        return ''; // Nilai default jika data jenis kelamin tidak tersedia
+      }
+    } catch (e) {
+      print('Error fetching gender: $e');
+      return ''; // Nilai default jika terjadi kesalahan
+    }
+  }
+
+  Future<int> getAgeMonths() async {
+    var dbClient = await db;
+
+    try {
+      List<Map<String, dynamic>> result =
+          await dbClient.query('contacts', columns: ['tanggal_lahir']);
+
+      if (result.isNotEmpty) {
+        String birthdate = result[0]['tanggal_lahir'] as String;
+        DateTime birthDate = DateFormat('yyyy-MM-dd').parse(birthdate);
+        DateTime currentDate = DateTime.now();
+
+        // Menghitung selisih bulan
+        int ageInMonths = (currentDate.year - birthDate.year) * 12 +
+            (currentDate.month - birthDate.month);
+
+        return ageInMonths;
+      } else {
+        return 0; // Umur default jika data tanggal lahir tidak tersedia
+      }
+    } catch (e) {
+      print('Error parsing birthdate: $e');
+      return 0; // Return nilai default jika parsing gagal
+    }
   }
 }
