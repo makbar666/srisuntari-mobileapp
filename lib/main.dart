@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:srisuntari_mobileapp/register/register_page.dart';
+import 'package:srisuntari_mobileapp/register/validate_page.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
@@ -15,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
+        builder: EasyLoading.init(),
         theme: ThemeData(fontFamily: 'Manrope'),
         home: RegisterPage());
   }
