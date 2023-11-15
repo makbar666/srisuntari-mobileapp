@@ -37,7 +37,7 @@ class DatabaseHelper {
         nama TEXT, 
         tanggal_lahir TEXT,
         jenisKelamin TEXT,
-        puskesmas TEXT,)
+        puskesmas TEXT)
     ''');
 
     await db.execute('''

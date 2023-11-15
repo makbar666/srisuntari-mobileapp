@@ -25,6 +25,27 @@ class _quizState extends State<quiz> {
   int totalQuestions = 1;
   QuizBrain quizBrain = QuizBrain();
 
+  bool isLoading = true; // Tambahkan variabel loading
+  @override
+  void initState() {
+    super.initState();
+    // Panggil fungsi untuk menginisialisasi pertanyaan
+    initializeQuiz();
+  }
+
+  Future<void> initializeQuiz() async {
+    try {
+      await quizBrain.initializeQuestions();
+    } catch (e) {
+      print('Error initializing quiz: $e');
+    } finally {
+      // Setelah selesai atau terjadi kesalahan, berhenti menampilkan loading
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
 
@@ -127,15 +148,17 @@ class _quizState extends State<quiz> {
                   SizedBox(
                     height: 20,
                   ),
-                  LinearPercentIndicator(
-                    animation: true,
-                    animationDuration: 800,
-                    lineHeight: 15,
-                    percent: totalQuestions / 20,
-                    barRadius: Radius.circular(10.0),
-                    progressColor: Colors.orange,
-                    backgroundColor: Colors.deepOrange.shade100,
-                  ).animate().fade(),
+                  isLoading
+                      ? CircularProgressIndicator() // Tampilkan loading jika sedang memuat
+                      : LinearPercentIndicator(
+                          animation: true,
+                          animationDuration: 800,
+                          lineHeight: 15,
+                          percent: totalQuestions / 20,
+                          barRadius: Radius.circular(10.0),
+                          progressColor: Colors.orange,
+                          backgroundColor: Colors.deepOrange.shade100,
+                        ).animate().fade(),
                   SizedBox(
                     height: 10,
                   ),
@@ -219,7 +242,9 @@ class _quizState extends State<quiz> {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return HasilQuis(
-                                quizBrain: quizBrain, nilai: nilai);
+                              quizBrain: quizBrain,
+                              nilai: nilai,
+                            );
                           }));
                         }
                       : null,

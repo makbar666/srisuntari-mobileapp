@@ -5,15 +5,19 @@ import 'question.dart';
 class QuizBrain {
   int _questionNumber = 0;
   int ageMonths = 0;
-  String gender = "";
+  String gender = "0";
   List<String> userQuestions = [];
   List<bool> userAnswers = [];
   List<Question> allQuestions = [];
 
+  Future<void> initializeQuiz() async {
+    // Tunggu pemanggilan DatabaseHelper().getAgeMonths() selesai
+    await initializeQuestions();
+  }
+
   QuizBrain() {
     initializeQuestions();
   }
-
   Future<void> initializeQuestions() async {
     gender = await DatabaseHelper().getGender();
     ageMonths = await DatabaseHelper().getAgeMonths();
@@ -25,12 +29,10 @@ class QuizBrain {
   List<Question> get currentQuestionList {
     List<Question> questions = [];
 
-    print('Debug: ageMonths = $ageMonths'); // Print ageMonths for debugging
-
     if (ageMonths >= 0 && ageMonths <= 6) {
       print('Debug: Adding questions from _question0sampai6Bulan');
       questions.addAll(_question0sampai6Bulan);
-    } else if (ageMonths >= 6 && ageMonths <= 59) {
+    } else if (ageMonths >= 7 && ageMonths <= 59) {
       print('Debug: Adding questions from _question6sampai59Bulan');
       questions.addAll(_question6sampai59Bulan);
     }
