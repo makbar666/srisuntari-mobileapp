@@ -34,11 +34,11 @@ class QuizBrain {
     if (ageMonths >= 0 && ageMonths <= 6) {
       print('Debug: Adding questions from _question0sampai6Bulan');
       questions.addAll(_question0sampai6Bulan);
-      _quistotal = 5;
+      _quistotal = 13;
     } else if (ageMonths >= 7 && ageMonths <= 59) {
       print('Debug: Adding questions from _question6sampai59Bulan');
       questions.addAll(_question6sampai59Bulan);
-      _quistotal = 12;
+      _quistotal = 15;
     }
 
     print(
@@ -52,44 +52,75 @@ class QuizBrain {
   List<Question> _question0sampai6Bulan = [
     Question('Apakah anak anda lahir di fasilitas pelayanan kesehatan?', true),
     Question('Apakah anak anda memiliki akta kelahiran ?', true),
-    Question('Apakah anak anda hanya memperoleh ASI saja ?', true),
-    Question(
-        'Apakah Anda memberikan Makanan/ASI kepada anak sebanyak 8 sampai 12 kali sehari ?',
+    Question('Berapa berat badan lahir anak saat lahir? < 2,4 atau > 3,7 kg ?',
         true),
     Question(
-        'Apakah di Rumah Anda memiliki tempat sampah yang tertutup ?  ', true),
+        'Berapa panjang badan anak saat lahir? < 45.6 atau > 55.6 cm ?', true),
+    Question('Lingka kepala anak anda saat lahir <31,5 atau >37 cm ?', true),
     Question(
-        'Apakah di Rumah Anda memiliki tempat sampah yang tertutup ?  ', true),
+        'Apakah anak anda sudah di imunisasi BCG?DPT 1,DPT 2,DPT 3,polio tetes 1,polio tetes 2,polio tetes 3,polio tetes 4,Polio suntik 1,Rotavirus 1,ritavirus 2,PCV 1,PCV 2 ?',
+        true),
+    Question(
+        'Apakah aanda tahu jika bayi anda usia 0-6 bulan  hanya minum Asi saja',
+        true),
+    Question(
+        'Apakah anak anda setiap bulan di timbang di posyandu atau puskemsas ?',
+        true),
+    Question(
+        'Apakah anda menyusui anak anda secara lanssung setiap 90 menit ? ',
+        true),
+    Question('Apakah anda membunagn sampah di sembarangan tempat?', true),
+    Question('Apakah tempat sampah anda di rumah terbuka /tertutup ?', true),
+    Question(
+        'Jika anak anda sakit batu,pilek,demam apakah langsung di bawa untuk di obati di Fasilitas kesehatan?',
+        true),
+    Question(
+        'Jika anak anda diare,sakit perut,demam apakah langsung di bawa untuk di obati di Fasilitas kesehatan?',
+        true),
+    Question(
+        'Jika anak anda diare,sakit perut,demam apakah langsung di bawa untuk di obati di Fasilitas kesehatan?',
+        true),
   ];
 
   List<Question> _question6sampai59Bulan = [
-    Question('Apakah anda mengetahui tentang Makanan Pendamping –ASI ?', true),
-    Question('Apakah anak Anda mengonsumsi sayuran ?', true),
+    Question('Apakah anak memiliki akta kelahiran', true),
     Question(
-        'Apakah anak Anda mengonsumsi Lauk Hewani seperti ikan/daging/telur?',
+        'Apakah anak anda suda mendapat Imnuisasi Campak,PCV 3,Polioo suntik 2,DPT lanjutan,Campak lanjuta?',
         true),
     Question(
-        'Apakah anak Anda mengonsumsi Lauk Nabati seperti tahu/tempe/kacang/buah-buah ?',
+        'Apakah anak anda rutin setiap bulan ke posyandu/puskesmas ?', true),
+    Question('Apakah berat badan anak anda naik bulan ini ?', true),
+    Question(
+        'Apakah anda mengetahui tentang Makanan Pendamping ASI dan makanan Tambahan ?',
         true),
     Question(
-        'Apakah anak Anda mengonsumsi Makanan Jajanan seperti biskuit/roti ?',
+        'Apakkah anak anda makan nasi,sayur ,ikan ,daging,buah,setiap hari ?',
         true),
     Question(
-        'Apakah anak Anda mengonsumsi susu seperti susu UHT/ susu full cream dan sejenisnya ?',
+        'Apakah anda mengerti,asupan Gizi pada anak kurang dapat menyebabkab stunting ?',
+        true),
+    Question('Apakah anak anda makan 3 kali sehari ?', true),
+    Question(
+        'Apakah dalam selama 3 jam dalam sehari anda menghabiskan waktu bersama anak tanpa orang lain yang besama anak ?',
+        true),
+    Question('Apakah air Minum yang di Konsumsi di rumah di rebus ?', true),
+    Question(
+        'Apakah air minum yang di konsumsi berwarna,berbau,dan berasa ?', true),
+    Question(
+        'Apakah tempat sampah anda di rumah tertutup dan terdapat sampah basah dan kering ',
         true),
     Question(
-        'Apakah ibu mengetahui bahwa kekurangan asupan makanan bergizi dapat mengakibatkan anak menjadi stunting ?',
+        'Apakah anda membuanag samapah dengan cara di bunag ke tempat sampah? ',
         true),
-    Question('Apakah ibu memberi makan anak 3 kali dalam sehari ?', true),
     Question(
-        'apakah Anda menghabiskan waktu bersama anak di rumah dalam 1 hari tanpa dengan orang lain selama 3 jam atau lebih ?',
+        'Jika anak anda sakit batu,pilek demam,apakah anda membawa langsung ke Puskesmas/RSUD/Klinik dokter ? ',
         true),
-    Question('Apakah air yang di berikan ke anak ada di masak ?', true),
     Question(
-        'Apakah air minum yang dikonsumsi tidak berasa, berwarna, berbau dan berkapur ?',
+        'Jika anak anda Diare,demam,sakit perut,anda langsung membawa ke Puskesmas/RSUD/Klinik Swasta ?',
         true),
-    Question('Apakah tempat sampah anda di rumah tertutup ?  ', true),
-    Question('Apakah tempat sampah anda di rumah tertutup ?  ', true),
+    Question(
+        'Jika anak anda Diare,demam,sakit perut,anda langsung membawa ke Puskesmas/RSUD/Klinik Swasta ?',
+        true),
   ];
 
   void nextQuestion() {
@@ -141,9 +172,9 @@ class MulaiQuis {
   Future<void> initializeDataQuestions() async {
     ageMonths = await DatabaseHelper().getAgeMonths();
     if (ageMonths >= 0 && ageMonths <= 6) {
-      _quistotal = 5;
+      _quistotal = 13;
     } else if (ageMonths >= 7 && ageMonths <= 59) {
-      _quistotal = 12;
+      _quistotal = 15;
     }
     print('RENDER DB BULAN = $ageMonths');
   }
