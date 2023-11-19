@@ -5,11 +5,13 @@ import 'question.dart';
 class QuizBrain {
   int _questionNumber = 0;
   int ageMonths = 0;
+  int _quistotal = 0;
   String gender = "0";
   List<String> userQuestions = [];
   List<bool> userAnswers = [];
   List<Question> allQuestions = [];
-
+  int get questionNumber => _questionNumber;
+  int get quistotal => _quistotal;
   Future<void> initializeQuiz() async {
     // Tunggu pemanggilan DatabaseHelper().getAgeMonths() selesai
     await initializeQuestions();
@@ -32,9 +34,11 @@ class QuizBrain {
     if (ageMonths >= 0 && ageMonths <= 6) {
       print('Debug: Adding questions from _question0sampai6Bulan');
       questions.addAll(_question0sampai6Bulan);
+      _quistotal = 5;
     } else if (ageMonths >= 7 && ageMonths <= 59) {
       print('Debug: Adding questions from _question6sampai59Bulan');
       questions.addAll(_question6sampai59Bulan);
+      _quistotal = 12;
     }
 
     print(
@@ -52,6 +56,8 @@ class QuizBrain {
     Question(
         'Apakah Anda memberikan Makanan/ASI kepada anak sebanyak 8 sampai 12 kali sehari ?',
         true),
+    Question(
+        'Apakah di Rumah Anda memiliki tempat sampah yang tertutup ?  ', true),
     Question(
         'Apakah di Rumah Anda memiliki tempat sampah yang tertutup ?  ', true),
   ];
@@ -82,6 +88,7 @@ class QuizBrain {
     Question(
         'Apakah air minum yang dikonsumsi tidak berasa, berwarna, berbau dan berkapur ?',
         true),
+    Question('Apakah tempat sampah anda di rumah tertutup ?  ', true),
     Question('Apakah tempat sampah anda di rumah tertutup ?  ', true),
   ];
 
@@ -115,5 +122,29 @@ class QuizBrain {
 
   void reset() {
     _questionNumber = 0;
+  }
+}
+
+class MulaiQuis {
+  int _quistotal = 0;
+  int ageMonths = 0;
+  int get quistotal => _quistotal;
+  Future<void> initializeData() async {
+    // Tunggu pemanggilan DatabaseHelper().getAgeMonths() selesai
+    await initializeDataQuestions();
+  }
+
+  MulaiQuis() {
+    initializeDataQuestions();
+  }
+
+  Future<void> initializeDataQuestions() async {
+    ageMonths = await DatabaseHelper().getAgeMonths();
+    if (ageMonths >= 0 && ageMonths <= 6) {
+      _quistotal = 5;
+    } else if (ageMonths >= 7 && ageMonths <= 59) {
+      _quistotal = 12;
+    }
+    print('RENDER DB BULAN = $ageMonths');
   }
 }

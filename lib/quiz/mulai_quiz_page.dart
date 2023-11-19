@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:srisuntari_mobileapp/quiz/quiz.dart';
+import 'package:srisuntari_mobileapp/quiz/class/quizt_braind.dart';
+import 'package:srisuntari_mobileapp/models/database_helper.dart';
 
-class MulaiQuiz extends StatelessWidget {
+class MulaiQuiz extends StatefulWidget {
   const MulaiQuiz({super.key});
+
+  @override
+  State<MulaiQuiz> createState() => _MulaiQuizState();
+}
+
+class _MulaiQuizState extends State<MulaiQuiz> {
+  final dbHelper = DatabaseHelper();
+  MulaiQuis quizData = MulaiQuis();
+  @override
+  void initState() {
+    super.initState();
+    initializeQuizData();
+  }
+
+  Future<void> initializeQuizData() async {
+    await quizData.initializeData();
+    setState(() {
+      // Trigger a rebuild after fetching data
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +140,7 @@ class MulaiQuiz extends StatelessWidget {
                               children: [
                                 Text(
                                   textAlign: TextAlign.left,
-                                  '20', // Teks di dalam kontainer
+                                  '${quizData.quistotal} Soal',
                                   style: TextStyle(
                                     fontFamily: 'Manrope',
                                     fontSize: 20.0, // Ukuran teks

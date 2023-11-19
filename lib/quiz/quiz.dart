@@ -8,7 +8,6 @@ import 'package:srisuntari_mobileapp/hasil/review_quis.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/user_data.dart';
 import 'package:srisuntari_mobileapp/quiz/class/quizt_braind.dart';
-import 'package:flutter/material.dart';
 
 import '../models/quiz_result.dart';
 
@@ -151,10 +150,11 @@ class _quizState extends State<quiz> {
                   isLoading
                       ? CircularProgressIndicator() // Tampilkan loading jika sedang memuat
                       : LinearPercentIndicator(
-                          animation: true,
+                          animation: false,
                           animationDuration: 800,
                           lineHeight: 15,
-                          percent: totalQuestions / 20,
+                          percent:
+                              (quizBrain.questionNumber) / quizBrain.quistotal,
                           barRadius: Radius.circular(10.0),
                           progressColor: Colors.orange,
                           backgroundColor: Colors.deepOrange.shade100,
@@ -167,7 +167,7 @@ class _quizState extends State<quiz> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        '10',
+                        '${quizBrain.questionNumber}/${quizBrain.quistotal}',
                         style: TextStyle(
                           fontFamily: 'Manrope',
                           fontSize: 22,

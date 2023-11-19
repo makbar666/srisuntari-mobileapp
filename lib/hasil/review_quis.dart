@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:srisuntari_mobileapp/quiz/class/quizt_braind.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -259,7 +258,6 @@ class ReviewQuiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _progress;
     List<String> userQuestions = quizBrain.userQuestions;
     List<bool> userAnswers = quizBrain.userAnswers;
     String indikator = "Hijau";
@@ -290,17 +288,8 @@ class ReviewQuiz extends StatelessWidget {
             Row(
               children: [
                 InkWell(
-                  onTap: () async {
-                    EasyLoading.showProgress(100, status: 'Mengunduh...');
-
-                    await Future.delayed(Duration(seconds: 1));
-
-                    EasyLoading.showSuccess('Success!');
-
-                    await Future.delayed(Duration(seconds: 1));
-
-                    EasyLoading.dismiss();
-
+                  onTap: () {
+                    // Navigator.pop(context);
                     generatePdf();
                   },
                   child: Icon(
