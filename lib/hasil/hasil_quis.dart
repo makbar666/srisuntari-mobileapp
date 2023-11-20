@@ -51,12 +51,11 @@ class _HasilQuisState extends State<HasilQuis> {
     pdf.addPage(
       pw.MultiPage(
         build: (pw.Context context) {
-          return [
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: _contacts.map((contact) {
-                return pw.Container(
-                    child: pw.Column(children: [
+          return _contacts.map((contact) {
+            return pw.Container(
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
                   pw.Center(
                     child: pw.Text(
                       'Pemerintah Dinas Kesehatan',
@@ -80,7 +79,10 @@ class _HasilQuisState extends State<HasilQuis> {
                   pw.SizedBox(height: 10),
                   pw.Center(
                     child: pw.Container(
-                        width: 450, height: 2, color: PdfColors.black),
+                      width: 450,
+                      height: 2,
+                      color: PdfColors.black,
+                    ),
                   ),
                   pw.SizedBox(height: 30),
                   pw.Row(
@@ -94,15 +96,14 @@ class _HasilQuisState extends State<HasilQuis> {
                         ),
                       ),
                       pw.Spacer(),
-                      for (var contact in _contacts)
-                        pw.Text(
-                          contact.nama ?? 'Nama Lengkap Tidak diisi',
-                          style: pw.TextStyle(
-                            font: pw.Font.helvetica(),
-                            fontSize: 17,
-                            color: PdfColors.black,
-                          ),
+                      pw.Text(
+                        contact.nama ?? 'Nama Lengkap Tidak diisi',
+                        style: pw.TextStyle(
+                          font: pw.Font.helvetica(),
+                          fontSize: 17,
+                          color: PdfColors.black,
                         ),
+                      ),
                     ],
                   ),
                   pw.Row(
@@ -218,51 +219,62 @@ class _HasilQuisState extends State<HasilQuis> {
                       color: PdfColors.black,
                     ),
                   ),
-                ]));
-              }).toList(),
-              // [
-
-              // ],
-            ),
-            // pw.SizedBox(height: 100),
-            pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.Container(
-                    height: 700,
-                    child: pw.ListView.builder(
-                      itemCount: userQuestions.length,
-                      itemBuilder: (context, index) {
-                        return pw.Column(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Text(
-                              '${index + 1}. ${userQuestions[index]}',
-                              style: pw.TextStyle(
-                                font: pw.Font.helvetica(),
-                                fontSize: 15,
-                                color: PdfColors.black,
-                              ),
-                            ),
-                            pw.Text(
-                              'Jawaban: ${userAnswers[index] ? 'Iya' : 'Tidak'}',
-                              style: pw.TextStyle(
-                                font: pw.Font.helveticaBold(),
-                                fontSize: 15,
-                                color: PdfColors.black,
-                              ),
-                            ),
-                            pw.SizedBox(height: 3)
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ])
-          ];
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Container(
+                        height: 700,
+                        child: pw.ListView.builder(
+                          itemCount: userQuestions.length,
+                          itemBuilder: (context, index) {
+                            return pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Container(
+                                    child: pw.Align(
+                                        alignment: pw.Alignment.centerLeft,
+                                        child: pw.Padding(
+                                          padding:
+                                              pw.EdgeInsets.only(left: 1.0),
+                                          child: pw.Text(
+                                            '${index + 1}. ${userQuestions[index]}',
+                                            style: pw.TextStyle(
+                                              font: pw.Font.helvetica(),
+                                              fontSize: 15,
+                                              color: PdfColors.black,
+                                            ),
+                                          ),
+                                        ))),
+                                pw.Container(
+                                    child: pw.Align(
+                                        alignment: pw.Alignment.centerLeft,
+                                        child: pw.Padding(
+                                          padding:
+                                              pw.EdgeInsets.only(left: 1.0),
+                                          child: pw.Text(
+                                            'Jawaban: ${userAnswers[index] ? 'Iya' : 'Tidak'}',
+                                            style: pw.TextStyle(
+                                              font: pw.Font.helvetica(),
+                                              fontSize: 15,
+                                              color: PdfColors.black,
+                                            ),
+                                          ),
+                                        )))
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          }).toList();
         },
       ),
     );
+
     // Ganti lokasi penyimpanan ke direktori eksternal
     final externalDirectory = await getExternalStorageDirectory();
     final timestamp = DateTime.now().millisecondsSinceEpoch;
