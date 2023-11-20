@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:srisuntari_mobileapp/hasil/review_quis.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/user_data.dart';
@@ -21,8 +22,9 @@ class HasilQuis extends StatefulWidget {
 }
 
 class _HasilQuisState extends State<HasilQuis> {
-  final dbHelper = DatabaseHelper();
   List<UserData> _contacts = [];
+
+  final dbHelper = DatabaseHelper();
   List<QuizResult> _quizResults = [];
   List<String> userQuestions = [];
   List<bool> userAnswers = [];
@@ -52,167 +54,175 @@ class _HasilQuisState extends State<HasilQuis> {
           return [
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Center(
-                  child: pw.Text(
-                    'Pemerintah Dinas Kesehatan',
-                    style: pw.TextStyle(
-                      font: pw.Font.helveticaBold(),
-                      fontSize: 25,
-                      color: PdfColors.black,
-                    ),
-                  ),
-                ),
-                pw.Center(
-                  child: pw.Text(
-                    'Kabupaten Fak Fak',
-                    style: pw.TextStyle(
-                      font: pw.Font.helveticaBold(),
-                      fontSize: 25,
-                      color: PdfColors.black,
-                    ),
-                  ),
-                ),
-                pw.SizedBox(height: 10),
-                pw.Center(
-                  child: pw.Container(
-                      width: 450, height: 2, color: PdfColors.black),
-                ),
-                pw.SizedBox(height: 30),
-                pw.Row(
-                  children: [
-                    pw.Text(
-                      'Nama Lengkap',
+              children: _contacts.map((contact) {
+                return pw.Container(
+                    child: pw.Column(children: [
+                  pw.Center(
+                    child: pw.Text(
+                      'Pemerintah Dinas Kesehatan',
                       style: pw.TextStyle(
                         font: pw.Font.helveticaBold(),
-                        fontSize: 17,
+                        fontSize: 25,
                         color: PdfColors.black,
                       ),
                     ),
-                    pw.Spacer(),
-                    for (var contact in _contacts)
+                  ),
+                  pw.Center(
+                    child: pw.Text(
+                      'Kabupaten Fak Fak',
+                      style: pw.TextStyle(
+                        font: pw.Font.helveticaBold(),
+                        fontSize: 25,
+                        color: PdfColors.black,
+                      ),
+                    ),
+                  ),
+                  pw.SizedBox(height: 10),
+                  pw.Center(
+                    child: pw.Container(
+                        width: 450, height: 2, color: PdfColors.black),
+                  ),
+                  pw.SizedBox(height: 30),
+                  pw.Row(
+                    children: [
                       pw.Text(
-                        'Alexande Grahambool',
+                        'Nama Lengkap',
+                        style: pw.TextStyle(
+                          font: pw.Font.helveticaBold(),
+                          fontSize: 17,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                      pw.Spacer(),
+                      for (var contact in _contacts)
+                        pw.Text(
+                          contact.nama ?? 'Nama Lengkap Tidak diisi',
+                          style: pw.TextStyle(
+                            font: pw.Font.helvetica(),
+                            fontSize: 17,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                    ],
+                  ),
+                  pw.Row(
+                    children: [
+                      pw.Text(
+                        'Jenis Kelamin',
+                        style: pw.TextStyle(
+                          font: pw.Font.helveticaBold(),
+                          fontSize: 17,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                      pw.Spacer(),
+                      pw.Text(
+                        contact.jenisKelamin ?? 'Jenis Kelamin Tidak diisi',
                         style: pw.TextStyle(
                           font: pw.Font.helvetica(),
                           fontSize: 17,
                           color: PdfColors.black,
                         ),
                       ),
-                  ],
-                ),
-                pw.Row(
-                  children: [
-                    pw.Text(
-                      'Jenis Kelamin',
-                      style: pw.TextStyle(
-                        font: pw.Font.helveticaBold(),
-                        fontSize: 17,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                    pw.Spacer(),
-                    pw.Text(
-                      'Perempuan',
-                      style: pw.TextStyle(
-                        font: pw.Font.helvetica(),
-                        fontSize: 17,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                pw.Row(
-                  children: [
-                    pw.Text(
-                      'Umur Kamu',
-                      style: pw.TextStyle(
-                        font: pw.Font.helveticaBold(),
-                        fontSize: 17,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                    pw.Spacer(),
-                    pw.Text(
-                      '1 Tahun 1 Bulan',
-                      style: pw.TextStyle(
-                        font: pw.Font.helvetica(),
-                        fontSize: 18,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                pw.Row(
-                  children: [
-                    pw.Text(
-                      'Lokasi Puskesmas',
-                      style: pw.TextStyle(
-                        font: pw.Font.helveticaBold(),
-                        fontSize: 17,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                    pw.Spacer(),
-                    pw.Text(
-                      'Puskesmas',
-                      style: pw.TextStyle(
-                        font: pw.Font.helvetica(),
-                        fontSize: 17,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                pw.Row(
-                  children: [
-                    pw.Text(
-                      'Status Indikator',
-                      style: pw.TextStyle(
-                        font: pw.Font.helveticaBold(),
-                        fontSize: 17,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                    pw.Spacer(),
-                    pw.Container(
-                      width: 15,
-                      height: 15,
-                      decoration: pw.BoxDecoration(
-                        color: PdfColor.fromInt(progressBarColor.value),
-                        borderRadius: pw.BorderRadius.circular(10),
-                      ),
-                    ),
-                    pw.SizedBox(width: 5),
-                    pw.Text(
-                      '${indikator}',
-                      style: pw.TextStyle(
-                        font: pw.Font.helvetica(),
-                        fontSize: 18,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                pw.SizedBox(height: 20),
-                pw.Text(
-                  'Catatan :',
-                  style: pw.TextStyle(
-                    font: pw.Font.helveticaBold(),
-                    fontSize: 17,
-                    color: PdfColors.black,
+                    ],
                   ),
-                ),
-                pw.SizedBox(height: 10),
-                pw.Text(
-                  '${catatan}',
-                  style: pw.TextStyle(
-                    font: pw.Font.helveticaBold(),
-                    fontSize: 17,
-                    color: PdfColors.black,
+                  pw.Row(
+                    children: [
+                      pw.Text(
+                        'Umur Kamu',
+                        style: pw.TextStyle(
+                          font: pw.Font.helveticaBold(),
+                          fontSize: 17,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                      pw.Spacer(),
+                      pw.Text(
+                        contact?.tanggalLahir != null
+                            ? "${(DateTime.now().difference(contact!.tanggalLahir!).inDays / 30).floor()} Bulan"
+                            : 'Umur Tidak Diisi',
+                        style: pw.TextStyle(
+                          font: pw.Font.helvetica(),
+                          fontSize: 18,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  pw.Row(
+                    children: [
+                      pw.Text(
+                        'Lokasi Puskesmas',
+                        style: pw.TextStyle(
+                          font: pw.Font.helveticaBold(),
+                          fontSize: 17,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                      pw.Spacer(),
+                      pw.Text(
+                        contact.puskesmas ?? 'Puskesmas Tidak Diisi',
+                        style: pw.TextStyle(
+                          font: pw.Font.helvetica(),
+                          fontSize: 17,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  pw.Row(
+                    children: [
+                      pw.Text(
+                        'Status Indikator',
+                        style: pw.TextStyle(
+                          font: pw.Font.helveticaBold(),
+                          fontSize: 17,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                      pw.Spacer(),
+                      pw.Container(
+                        width: 15,
+                        height: 15,
+                        decoration: pw.BoxDecoration(
+                          color: PdfColor.fromInt(progressBarColor.value),
+                          borderRadius: pw.BorderRadius.circular(10),
+                        ),
+                      ),
+                      pw.SizedBox(width: 5),
+                      pw.Text(
+                        '${indikator}',
+                        style: pw.TextStyle(
+                          font: pw.Font.helvetica(),
+                          fontSize: 18,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                  pw.SizedBox(height: 20),
+                  pw.Text(
+                    'Catatan :',
+                    style: pw.TextStyle(
+                      font: pw.Font.helveticaBold(),
+                      fontSize: 17,
+                      color: PdfColors.black,
+                    ),
+                  ),
+                  pw.SizedBox(height: 10),
+                  pw.Text(
+                    '${catatan}',
+                    style: pw.TextStyle(
+                      font: pw.Font.helveticaBold(),
+                      fontSize: 17,
+                      color: PdfColors.black,
+                    ),
+                  ),
+                ]));
+              }).toList(),
+              // [
+
+              // ],
             ),
             // pw.SizedBox(height: 100),
             pw.Column(
@@ -591,23 +601,23 @@ class _HasilQuisState extends State<HasilQuis> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () {
-      //     generatePdf();
-      //     // Navigator.push(
-      //     //   context,
-      //     //   MaterialPageRoute(
-      //     //     builder: (context) => ReviewQuiz(
-      //     //       nilai: widget.nilai,
-      //     //       quizBrain: widget.quizBrain,
-      //     //     ),
-      //     //   ),
-      //     // );
-      //   },
-      //   label: Text('Expor Pdf',
-      //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-      //   backgroundColor: Color(0xFF6B81DE),
-      // ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          generatePdf();
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => ReviewQuiz(
+          //       nilai: widget.nilai,
+          //       quizBrain: widget.quizBrain,
+          //     ),
+          //   ),
+          // );
+        },
+        label: Text('Expor Pdf',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        backgroundColor: Color(0xFF6B81DE),
+      ),
     );
   }
 }
