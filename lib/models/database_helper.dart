@@ -44,6 +44,7 @@ class DatabaseHelper {
         CREATE TABLE quiz_results 
         (id INTEGER PRIMARY KEY,
         score INTEGER,
+        status TEXT,
         date TEXT)
     ''');
   }
@@ -55,6 +56,7 @@ class DatabaseHelper {
         CREATE TABLE quiz_results 
         (id INTEGER PRIMARY KEY,
         score INTEGER,
+        status TEXT,
         date TEXT)
     ''');
     }

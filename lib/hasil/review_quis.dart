@@ -45,7 +45,7 @@ class _ReviewQuizState extends State<ReviewQuiz> {
   Widget build(BuildContext context) {
     double _progress;
     List<String> userQuestions = widget.quizBrain.userQuestions;
-    List<bool> userAnswers = widget.quizBrain.userAnswers;
+    List<int> userAnswers = widget.quizBrain.userAnswers;
     String indikator = "Hijau";
     Color progressBarColor = Colors.green;
     String Catatan = "masi sehat";
@@ -257,14 +257,14 @@ class _ReviewQuizState extends State<ReviewQuiz> {
                                 color: Colors.black,
                                 fontWeight: FontWeight.normal),
                           ),
-                          subtitle: Text(
-                            'Jawaban: ${userAnswers[index] ? 'Iya' : 'Tidak'}',
-                            style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 17, // Ukuran teks
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          // subtitle: Text(
+                          //   'Jawaban: ${userAnswers[index] ? 'Iya' : 'Tidak'}',
+                          //   style: TextStyle(
+                          //       fontFamily: 'Manrope',
+                          //       fontSize: 17, // Ukuran teks
+                          //       color: Colors.black,
+                          //       fontWeight: FontWeight.bold),
+                          // ),
                         );
                       },
                     ),
@@ -300,7 +300,7 @@ class _ReviewQuizState extends State<ReviewQuiz> {
     }
 
     List<String> userQuestions = widget.quizBrain.userQuestions;
-    List<bool> userAnswers = widget.quizBrain.userAnswers;
+    // List<bool> userAnswers = widget.quizBrain.userAnswers;
 
     final pdf = pw.Document();
     pdf.addPage(
@@ -489,14 +489,14 @@ class _ReviewQuizState extends State<ReviewQuiz> {
                                 color: PdfColors.black,
                               ),
                             ),
-                            pw.Text(
-                              'Jawaban: ${userAnswers[index] ? 'Iya' : 'Tidak'}',
-                              style: pw.TextStyle(
-                                font: pw.Font.helveticaBold(),
-                                fontSize: 15,
-                                color: PdfColors.black,
-                              ),
-                            ),
+                            // pw.Text(
+                            //   'Jawaban: ${userAnswers[index] ? 'Iya' : 'Tidak'}',
+                            //   style: pw.TextStyle(
+                            //     font: pw.Font.helveticaBold(),
+                            //     fontSize: 15,
+                            //     color: PdfColors.black,
+                            //   ),
+                            // ),
                             pw.SizedBox(height: 3)
                           ],
                         );
