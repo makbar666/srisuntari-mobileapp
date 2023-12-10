@@ -298,7 +298,7 @@ class _HasilQuisState extends State<HasilQuis> {
     _loadDataQuiz();
     // Memastikan userQuestions dan userAnswers diisi dengan data dari widget.quizBrain
     userQuestions = widget.quizBrain.userQuestions;
-    userAnswers = widget.quizBrain.userAnswers;
+    // userAnswers = widget.quizBrain.userAnswers;
   }
 
   void _loadData() async {

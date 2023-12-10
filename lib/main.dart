@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:srisuntari_mobileapp/home/home_quiz.dart';
 import 'package:srisuntari_mobileapp/register/register_page.dart';
 import 'package:srisuntari_mobileapp/register/validate_page.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         builder: EasyLoading.init(),
         theme: ThemeData(fontFamily: 'Manrope'),
-        home: RegisterPage());
+        home: HomeQuiz());
   }
 }
 

@@ -45,20 +45,36 @@ class _quizState extends State<quiz> {
     }
   }
 
-  void checkAnswer(bool userPickedAnswer) {
-    bool correctAnswer = quizBrain.getCorrectAnswer();
+  void checkAnswer(int selectedAnswerIndex) {
+    List<int> userAnswers = quizBrain.userAnswers;
+    int score = quizBrain.currentQuestionList[quizBrain.questionNumber]
+        .scores[selectedAnswerIndex];
+    bool isCorrect = selectedAnswerIndex ==
+        quizBrain
+            .currentQuestionList[quizBrain.questionNumber].correctAnswerIndex;
 
     setState(() {
       if (quizBrain.isFinished()) {
-        // Skor kuis telah selesai, simpan ke dalam database
-        QuizResult quizResult = QuizResult(
-          score: nilai,
-          date: DateTime.now().toIso8601String(),
-        );
+        quizBrain.printUserAnswers();
+        // QuizResult quizResult = QuizResult(
+        //   score: nilai,
+        //   date: DateTime.now().toIso8601String(),
+        // );
 
-        dbHelper.saveQuizResult(quizResult);
+        // dbHelper.saveQuizResult(quizResult);
 
-        printQuizfromDB();
+        // printQuizfromDB();
+
+        // Check the status based on the count of specific scores
+        // print(userAnswers);
+        // int countScore0 = userAnswers.where((score) => score == 0).length;
+        // int countScore20 = userAnswers.where((score) => score == 20).length;
+
+        // if (countScore0 >= 4) {
+        //   print('Status Hijau');
+        // } else if (countScore20 >= 4) {
+        //   print('Status Merah');
+        // }
 
         Alert(
           context: context,
@@ -67,10 +83,10 @@ class _quizState extends State<quiz> {
               'Kamu Telah Menyelesaikan Kuis Silahkan Tekan Tombol Selesai Untuk Melihat Hasil Kuis',
         ).show();
       } else {
-        if (userPickedAnswer == correctAnswer) {
-          nilai++;
+        if (isCorrect) {
+          nilai += score;
         }
-        quizBrain.checksoal(userPickedAnswer);
+        quizBrain.checksoal(selectedAnswerIndex);
         totalQuestions++;
         quizBrain.nextQuestion();
       }
@@ -209,18 +225,16 @@ class _quizState extends State<quiz> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      CustomButton(
-                        text: 'Iya',
-                        onTap: () {
-                          checkAnswer(true);
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      CustomButton(
-                        text: 'Tidak',
-                        onTap: () {
-                          checkAnswer(false);
-                        },
+                      Column(
+                        children: List.generate(
+                          quizBrain.getAnswerOptions().length,
+                          (index) => CustomButton(
+                            text: quizBrain.getAnswerOptions()[index],
+                            onTap: () {
+                              checkAnswer(index);
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
