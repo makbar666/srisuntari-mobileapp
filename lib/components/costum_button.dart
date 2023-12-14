@@ -16,33 +16,24 @@ class _CustomButtonState extends State<CustomButton> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isPressed = !isPressed;
-        });
-        widget.onTap?.call();
-      },
-      splashColor: Colors.black,
-      customBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        side: isPressed
-            ? BorderSide(color: Colors.green, width: 2.0)
-            : BorderSide(color: Colors.grey.shade200, width: 2.0),
+    return ElevatedButton(
+      onPressed: widget.onTap,
+      style: ElevatedButton.styleFrom(
+        primary: Colors.grey.shade100,
+        onPrimary: Colors.black54,
+        elevation: 0, // Hapus bayangan pada tombol
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
       child: Container(
         padding: const EdgeInsets.all(14.0),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(8),
-        ),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
             widget.text,
             style: const TextStyle(
               fontFamily: 'Manrope',
-              color: Colors.black54,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),

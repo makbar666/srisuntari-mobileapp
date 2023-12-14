@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/quiz_result.dart';
@@ -17,8 +18,10 @@ class _HomeQuizState extends State<HomeQuiz> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          Navigator.of(context).pop(true);
-          return Future.value(true);
+          // exit(0);
+          // Show a confirmation dialog
+          bool shouldExit = await _showQuitConfirmationDialog(context);
+          return shouldExit;
         },
         child: Scaffold(
           backgroundColor: Color(0xFF6B81DE),
@@ -129,5 +132,35 @@ class _HomeQuizState extends State<HomeQuiz> {
             ),
           ),
         ));
+  }
+
+  Future<dynamic> _showQuitConfirmationDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Quit Confirmation'),
+        content: Text('Are you sure you want to quit the app?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Colors.black45),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              // Close the dialog and exit the app
+              Navigator.of(context).pop(true);
+              exit(0);
+            },
+            child: Text(
+              'Quit',
+              style: TextStyle(color: Colors.black45),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
