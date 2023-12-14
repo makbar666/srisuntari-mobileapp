@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:srisuntari_mobileapp/hasil/review_quis.dart';
+import 'package:srisuntari_mobileapp/home/home_quiz.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/user_data.dart';
 import 'package:srisuntari_mobileapp/quiz/class/quizt_braind.dart';
@@ -28,24 +29,45 @@ class _HasilQuisState extends State<HasilQuis> {
   List<QuizResult> _quizResults = [];
   List<String> userQuestions = [];
   List<bool> userAnswers = [];
-
+  List<String> userAnswerOption = [];
   Future<void> generatePdf() async {
-    if (_quizResults.isNotEmpty) {
-      final lastQuizResult = _quizResults.last;
+    EasyLoading.show(status: 'Generating PDF...'); // Menampilkan dialog
+    // if (_quizResults.isNotEmpty) {
+    //   final lastQuizResult = _quizResults.last;
 
-      if (lastQuizResult.score >= 1 && lastQuizResult.score <= 6) {
-        indikator = "Merah";
-        catatan = "Status Merah";
-        progressBarColor = Colors.red;
-      } else if (lastQuizResult.score >= 7 && lastQuizResult.score <= 9) {
-        indikator = "Kurang";
-        catatan = "Status Kurang";
-        progressBarColor = Colors.yellow;
-      } else if (lastQuizResult.score >= 10) {
-        indikator = "Baik";
-        catatan = "Status Baik";
-        progressBarColor = Colors.green;
-      }
+    //   if (lastQuizResult.score >= 0 && lastQuizResult.score <= 0) {
+    //     indikator = "Hijau";
+    //     catatan =
+    //         "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+    //     progressBarColor = Colors.green;
+    //   } else if (lastQuizResult.score >= 1 && lastQuizResult.score <= 19) {
+    //     indikator = "Kuning";
+    //     catatan =
+    //         "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+    //     progressBarColor = Colors.yellow;
+    //   } else if (lastQuizResult.score >= 20) {
+    //     indikator = "Merah";
+    //     catatan =
+    //         "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+    //     progressBarColor = Colors.red;
+    //   }
+    // }
+
+    if (widget.nilai >= 0 && widget.nilai <= 0) {
+      indikator = "Hijau";
+      catatan =
+          "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+      progressBarColor = Colors.green;
+    } else if (widget.nilai >= 1 && widget.nilai <= 19) {
+      indikator = "Kuning";
+      catatan =
+          "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+      progressBarColor = Colors.yellow;
+    } else if (widget.nilai >= 20) {
+      indikator = "Merah";
+      catatan =
+          "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+      progressBarColor = Colors.red;
     }
     final pdf = pw.Document();
     pdf.addPage(
@@ -252,7 +274,7 @@ class _HasilQuisState extends State<HasilQuis> {
                                           padding:
                                               pw.EdgeInsets.only(left: 1.0),
                                           child: pw.Text(
-                                            'Jawaban: ${userAnswers[index] ? 'Iya' : 'Tidak'}',
+                                            'Jawaban: ${userAnswerOption[index]}',
                                             style: pw.TextStyle(
                                               font: pw.Font.helvetica(),
                                               fontSize: 15,
@@ -280,6 +302,7 @@ class _HasilQuisState extends State<HasilQuis> {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final file = File('${externalDirectory!.path}/Srisuntari_$timestamp.pdf');
     await file.writeAsBytes(await pdf.save());
+    EasyLoading.dismiss();
     if (await file.exists()) {
       print('File PDF berhasil disimpan di: ${file.path}');
       // Buka file tersebut dengan OpenFile
@@ -291,6 +314,8 @@ class _HasilQuisState extends State<HasilQuis> {
     // OpenFile.open(file.path);
   }
 
+  ScrollController _scrollController = ScrollController();
+  bool isAppBarExpanded = true;
   @override
   void initState() {
     super.initState();
@@ -298,7 +323,33 @@ class _HasilQuisState extends State<HasilQuis> {
     _loadDataQuiz();
     // Memastikan userQuestions dan userAnswers diisi dengan data dari widget.quizBrain
     userQuestions = widget.quizBrain.userQuestions;
-    // userAnswers = widget.quizBrain.userAnswers;
+    userAnswerOption = widget.quizBrain.userAnswerOption;
+
+    _scrollController.addListener(() {
+      if (_scrollController.offset <= 0) {
+        // SliverAppBar sepenuhnya muncul setelah selesai di-scroll ke atas
+        if (!isAppBarExpanded) {
+          setState(() {
+            isAppBarExpanded = true;
+            // Tambahkan logika atau perubahan yang diinginkan
+          });
+        }
+      } else {
+        // SliverAppBar sedang digulir ke atas
+        if (isAppBarExpanded) {
+          setState(() {
+            isAppBarExpanded = false;
+            // Tambahkan logika atau perubahan yang diinginkan
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _loadData() async {
@@ -330,37 +381,57 @@ class _HasilQuisState extends State<HasilQuis> {
 
   @override
   Widget build(BuildContext context) {
-    if (_quizResults.isNotEmpty) {
-      final lastQuizResult = _quizResults.last;
-
-      if (lastQuizResult.score >= 1 && lastQuizResult.score <= 6) {
-        indikator = "Merah";
-        catatan = "Status Merah";
-        progressBarColor = Colors.red;
-      } else if (lastQuizResult.score >= 7 && lastQuizResult.score <= 9) {
-        indikator = "Kurang";
-        catatan = "Status Kurang";
-        progressBarColor = Colors.yellow;
-      } else if (lastQuizResult.score >= 10) {
-        indikator = "Baik";
-        catatan = "Status Baik";
-        progressBarColor = Colors.green;
-      }
+    if (widget.nilai >= 0 && widget.nilai <= 0) {
+      indikator = "Hijau";
+      catatan =
+          "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+      progressBarColor = Colors.green;
+    } else if (widget.nilai >= 1 && widget.nilai <= 19) {
+      indikator = "Kuning";
+      catatan =
+          "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+      progressBarColor = Colors.yellow;
+    } else if (widget.nilai >= 20) {
+      indikator = "Merah";
+      catatan =
+          "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+      progressBarColor = Colors.red;
     }
 
     return Scaffold(
       backgroundColor: Color(0xFF6B81DE),
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: <Widget>[
           SliverAppBar(
             leading: IconButton(
-              icon: Icon(Icons.close),
+              icon: Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
               padding: EdgeInsets.all(10),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeQuiz()),
+                );
+              },
             ),
+            actions: [
+              IconButton(
+                icon: Icon(
+                  Icons.picture_as_pdf_outlined,
+                  color: Colors.white,
+                ), // Gantilah 'your_icon' dengan ikon yang diinginkan
+                onPressed: () {
+                  // Tindakan yang akan dijalankan ketika ikon diklik
+                  generatePdf();
+                },
+              ),
+            ],
             backgroundColor: Color(0xFF6B81DE),
             expandedHeight: 350,
-            floating: true,
+            floating: false,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
@@ -371,7 +442,7 @@ class _HasilQuisState extends State<HasilQuis> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              centerTitle: true,
+              centerTitle: false,
               expandedTitleScale: 1,
               collapseMode: CollapseMode.parallax,
               background: Container(
@@ -404,7 +475,7 @@ class _HasilQuisState extends State<HasilQuis> {
                           topLeft: Radius.circular(20.0),
                           topRight: Radius.circular(20.0)),
                       child: Container(
-                        height: 350,
+                        height: 400,
                         width: MediaQuery.of(context).size.width,
                         color: Colors.white,
                         child: Padding(
@@ -592,7 +663,7 @@ class _HasilQuisState extends State<HasilQuis> {
                               ),
                             ),
                             subtitle: Text(
-                              'Jawaban: ${userAnswers[adjustedIndex] ? 'Iya' : 'Tidak'}',
+                              'Jawaban: ${userAnswerOption[adjustedIndex]}',
                               style: TextStyle(
                                 fontFamily: 'Manrope',
                                 fontSize: 17,
@@ -612,23 +683,6 @@ class _HasilQuisState extends State<HasilQuis> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          generatePdf();
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ReviewQuiz(
-          //       nilai: widget.nilai,
-          //       quizBrain: widget.quizBrain,
-          //     ),
-          //   ),
-          // );
-        },
-        label: Text('Expor Pdf',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        backgroundColor: Color(0xFF6B81DE),
       ),
     );
   }

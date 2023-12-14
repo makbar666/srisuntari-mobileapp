@@ -183,11 +183,15 @@ class _MulaiQuizState extends State<MulaiQuiz> {
                       return quiz();
                     }));
                   },
-                  child: Text("Mulai Kuis",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      )),
+                  child: Text(
+                    "Mulai Kuis",
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFF6B81DE),
                     shape: RoundedRectangleBorder(

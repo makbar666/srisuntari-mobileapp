@@ -14,194 +14,114 @@ class _HomeQuizState extends State<HomeQuiz> {
   List<QuizResult> quizResults = [];
 
   @override
-  void initState() {
-    super.initState();
-    loadQuizResults();
-  }
-
-  Future<void> loadQuizResults() async {
-    List<QuizResult> results = await DatabaseHelper().getAllQuizResults();
-    print("Quiz Results");
-    print(quizResults);
-    setState(() {
-      quizResults = results;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Color(0xFF6B81DE),
-        floatingActionButton: Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RegisterPage(),
-                  ),
-                );
-              },
-              label: const Text(
-                'Mulai Quiz',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              backgroundColor: Color(0xFF6B81DE),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
+    return Scaffold(
+      backgroundColor: Color(0xFF6B81DE),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/icon_dashboard.png', // Ganti dengan path gambar Anda
+              width: 250, // Sesuaikan lebar gambar
+              height: 250, // Sesuaikan tinggi gambar
             ),
-          ),
-        ),
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              backgroundColor: Color(0xFF6B81DE),
-              expandedHeight: 50,
-              floating: true,
-              pinned: true,
-              collapsedHeight: 80,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Srisuntari Mobile App',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 23,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                titlePadding: EdgeInsets.only(left: 30, bottom: 20, top: 33),
-                centerTitle: false,
-                expandedTitleScale: 1.3,
-                collapseMode: CollapseMode.parallax,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: Container(
-                    height: 700,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.white,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            top: 20,
-                            bottom: 20,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Riwayat Quiz",
-                                style: TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: quizResults.length,
-                            itemBuilder: (context, index) {
-                              return buildQuizResultItem(quizResults[index]);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildQuizResultItem(QuizResult quizResult) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      padding: EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: 20),
+            Column(
               children: [
                 Text(
-                  "Quis #${quizResult.id}",
+                  'Selamat Datang! di aplikasi',
                   style: TextStyle(
-                    fontFamily: 'Manrope',
                     fontSize: 16,
+                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey[600],
+                    color: Colors.white70,
+                  ),
+                ),
+                Text(
+                  'SKRINING STUNTING MANDIRI',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Manrope',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: 30),
+                Container(
+                  width: 300,
+                  child: Text(
+                    'Aplikasi ini blblblblblbllblblbBLBLBLBLBLBLBL',
+                    textAlign:
+                        TextAlign.center, // Atur rata tengah secara horizontal
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white70,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 60),
+            Column(
+              children: [
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth:
+                        200, // Ganti dengan lebar maksimum yang diinginkan
+                  ),
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Mulai Kuis",
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black38,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white70,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Tanggal: ${quizResult.date}",
+                  'Dinas Kesehatan Kabupaten Fak-Fak',
                   style: TextStyle(
+                    fontSize: 13,
                     fontFamily: 'Manrope',
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.grey[600],
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white70,
                   ),
                 ),
-                SizedBox(height: 10),
                 Text(
-                  "Status: ${quizResult.status}",
+                  '@Copyright 2024',
                   style: TextStyle(
+                    fontSize: 13,
                     fontFamily: 'Manrope',
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.grey[600],
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white70,
                   ),
                 ),
               ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Handle the button click event
-            },
-            child: Text(
-              "Info",
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -87,6 +87,7 @@ flutter:
     - images/askquestion.png
     - images/icon_mulaikuis.png
     - images/family.png
+    - images/icon_dashboard.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

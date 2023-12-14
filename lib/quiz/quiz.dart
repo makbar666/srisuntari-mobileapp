@@ -228,11 +228,15 @@ class _quizState extends State<quiz> {
                       Column(
                         children: List.generate(
                           quizBrain.getAnswerOptions().length,
-                          (index) => CustomButton(
-                            text: quizBrain.getAnswerOptions()[index],
-                            onTap: () {
-                              checkAnswer(index);
-                            },
+                          (index) => Padding(
+                            padding: EdgeInsets.all(
+                                4.0), // Sesuaikan nilai padding sesuai kebutuhan Anda
+                            child: CustomButton(
+                              text: quizBrain.getAnswerOptions()[index],
+                              onTap: () {
+                                checkAnswer(index);
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -262,15 +266,19 @@ class _quizState extends State<quiz> {
                           }));
                         }
                       : null,
-                  child: Text("Selesai",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      )),
+                  child: Text(
+                    "Selesai",
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
                     primary: quizBrain.isFinished()
                         ? Color(0xFF6B81DE)
-                        : Color.fromARGB(255, 140, 152, 205),
+                        : Color.fromARGB(255, 114, 124, 169),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),

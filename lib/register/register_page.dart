@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:srisuntari_mobileapp/HISTORY/riwayat_quis.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/user_data.dart';
 import 'package:srisuntari_mobileapp/quiz/mulai_quiz_page.dart';
@@ -149,8 +150,28 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Color(0xFF6B81DE),
           body: CustomScrollView(slivers: <Widget>[
             SliverAppBar(
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.history,
+                      color: Colors.white,
+                      size: 26,
+                    ), // Gantilah 'your_icon' dengan ikon yang diinginkan
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RiwayatQuiz(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
               backgroundColor: Color(0xFF6B81DE),
-              expandedHeight: 150,
+              expandedHeight: 90,
               floating: true,
               pinned: true,
               collapsedHeight: 80,
@@ -159,8 +180,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment:
                       MainAxisAlignment.start, // Mengatur sejajar ke kiri
                   children: [
-                    Icon(Icons.arrow_back_sharp, color: Colors.white),
-                    SizedBox(width: 5),
                     Text(
                       'Daftar',
                       style: TextStyle(
@@ -425,7 +444,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                           onPressed: () async {
                                             registerUser();
                                           },
-                                          child: Text('Simpan'),
+                                          child: Text(
+                                            'Simpan',
+                                            style: TextStyle(
+                                              fontFamily: 'Manrope',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ]))))))
