@@ -1,0 +1,194 @@
+[33mcommit 342858994a5743c1db7ec2609a0203483629ee71[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: c9b4987 edf3ad8
+Author: makbar666 <125814911+makbar666@users.noreply.github.com>
+Date:   Mon Dec 11 00:11:36 2023 +0800
+
+    Merge pull request #9 from makbar666/akbar
+    
+    update alur
+
+[33mcommit edf3ad8fe07a0ce1e72dc21a7feda8284162b2ba[m[33m ([m[1;31morigin/akbar[m[33m)[m
+Author: akbarmhd666 <akbarmhd666@gmail.com>
+Date:   Mon Dec 11 00:10:35 2023 +0800
+
+    update alur
+
+[33mcommit c9b4987cd3b938b69488aa46c01dd94166a2956b[m[33m ([m[1;31morigin/backup[m[33m)[m
+Merge: 449569b 97e2933
+Author: makbar666 <125814911+makbar666@users.noreply.github.com>
+Date:   Mon Nov 20 09:40:25 2023 +0800
+
+    Merge pull request #8 from makbar666/akbar
+    
+    fix layout pdf
+
+[33mcommit 97e293388873f8b8cb7f6df04de49b7bbbdd06e7[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Mon Nov 20 09:38:40 2023 +0800
+
+    fix layout pdf
+
+[33mcommit 449569b57a550b00442493a32d119e7530a73313[m
+Merge: 36306fb a72d86e
+Author: makbar666 <125814911+makbar666@users.noreply.github.com>
+Date:   Mon Nov 20 08:48:32 2023 +0800
+
+    Merge pull request #7 from makbar666/akbar
+    
+    get data pdf
+
+[33mcommit a72d86ec4c364e3123dd22feade0d437edd51254[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Mon Nov 20 08:43:12 2023 +0800
+
+    get data pdf
+
+[33mcommit 36306fbfb932066e0f5e6a62f16f5e2593f28fb7[m
+Author: basoarfanefendy172263@gmail.com <basoarfanefendy172263@gmail.com>
+Date:   Sun Nov 19 13:26:13 2023 +0800
+
+    tambah soal saja
+
+[33mcommit c1983f698b9bb55a61de58953e078269831a651a[m
+Author: basoarfanefendy172263@gmail.com <basoarfanefendy172263@gmail.com>
+Date:   Sun Nov 19 09:56:18 2023 +0800
+
+    fix bug
+
+[33mcommit 5276a0c77a836f1c4d0c9ed5e62cf60ed4d60fab[m
+Author: basoarfanefendy172263@gmail.com <basoarfanefendy172263@gmail.com>
+Date:   Wed Nov 15 21:25:45 2023 +0800
+
+    fixx quiz
+
+[33mcommit b979693ab9a5bf4f9a0f23c10542fd11a4256680[m
+Merge: aaf10fe 3554948
+Author: makbar666 <125814911+makbar666@users.noreply.github.com>
+Date:   Tue Nov 14 08:05:16 2023 +0800
+
+    Merge pull request #6 from makbar666/akbar
+    
+    Akbar
+
+[33mcommit 355494835ca77b8dd9a2d1a1cb13dbbb53524e33[m
+Merge: 15696b3 aaf10fe
+Author: makbar666 <125814911+makbar666@users.noreply.github.com>
+Date:   Tue Nov 14 08:04:27 2023 +0800
+
+    Merge pull request #5 from makbar666/main
+    
+    Merge pull request #4 from makbar666/akbar
+
+[33mcommit 15696b3c45746063b8ab1945b63900941b96034a[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Tue Nov 14 08:02:29 2023 +0800
+
+    update quiz
+
+[33mcommit aaf10fe6df7d11c56f7795b26d6cac605d2ef3e2[m
+Merge: 6de2707 d41bcc0
+Author: makbar666 <125814911+makbar666@users.noreply.github.com>
+Date:   Thu Oct 19 16:22:26 2023 +0800
+
+    Merge pull request #4 from makbar666/akbar
+    
+    Akbar
+
+[33mcommit d41bcc03c94659494cb4292cf45798eeb09b8932[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Thu Oct 19 16:19:28 2023 +0800
+
+    update (responsive)
+
+[33mcommit 8618f8f09f81457b3828232f95fce1d324831b93[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Mon Oct 9 01:32:22 2023 +0800
+
+    databse add
+
+[33mcommit 4c968c442f6362f9eb6da88418bb908a178901ab[m
+Merge: f1a38db 6d06b03
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Sun Oct 8 23:53:53 2023 +0800
+
+    Merge branch 'main' into akbar
+
+[33mcommit 6d06b030b574fe37c51c02a53a786ceda29bb715[m
+Merge: 32e8ebf 6de2707
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Sun Oct 8 23:51:50 2023 +0800
+
+    Merge branch 'main' of https://github.com/makbar666/srisuntari-mobileapp
+
+[33mcommit 32e8ebf6395fcb473dc37d9950ac056caf9bdf46[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Sun Oct 8 23:51:31 2023 +0800
+
+    dd
+
+[33mcommit 6de2707e816cd9d9b4a579818d502a71cedb8e58[m
+Merge: 27abc4d f16d1cf
+Author: makbar666 <125814911+makbar666@users.noreply.github.com>
+Date:   Sun Oct 8 23:48:03 2023 +0800
+
+    Merge pull request #3 from makbar666/appank
+    
+    Appank
+
+[33mcommit f1a38db90642cef40ed72c9d8c73b9f109b10aba[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Sun Oct 8 23:42:47 2023 +0800
+
+    add sqflite
+
+[33mcommit f16d1cfae96e448058ef7d2d1c82c7a71493f5b7[m[33m ([m[1;31morigin/appank[m[33m, [m[1;32mappank[m[33m)[m
+Author: basoarfanefendy172263@gmail.com <basoarfanefendy172263@gmail.com>
+Date:   Sun Oct 8 22:46:14 2023 +0800
+
+    convert ke pdf
+
+[33mcommit 4421172d2f282ac59befe72367f313bda9de952b[m
+Author: basoarfanefendy172263@gmail.com <basoarfanefendy172263@gmail.com>
+Date:   Sun Oct 8 08:45:38 2023 +0800
+
+    quiz telah selesai
+
+[33mcommit 56217fd6c19534b40d979af6b4b38850f79ab575[m
+Merge: 0ff8481 27abc4d
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Mon Oct 2 22:31:09 2023 +0800
+
+    Merge branch 'main' into akbar
+
+[33mcommit 0ff8481c2cd1ff31ac83228410cbde8085a89b92[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Mon Oct 2 22:29:21 2023 +0800
+
+    update Register Page
+
+[33mcommit 27abc4d892440703ceaf88070e937a2437030eb7[m
+Merge: 84d4664 1ccbf7f
+Author: makbar666 <125814911+makbar666@users.noreply.github.com>
+Date:   Mon Oct 2 22:28:25 2023 +0800
+
+    Merge pull request #1 from makbar666/appank
+    
+    Tolong di gabung akbar
+
+[33mcommit 1ccbf7fc343f3eaf61bde0d8e2ac9518485c7823[m
+Author: basoarfanefendy172263@gmail.com <basoarfanefendy172263@gmail.com>
+Date:   Sun Oct 1 10:44:24 2023 +0800
+
+    Tolong di gabung akbar
+
+[33mcommit 84d46649a26ca0fc289161d132656e25542e16a9[m[33m ([m[1;31morigin/Akbar[m[33m)[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Thu Sep 28 13:38:11 2023 +0800
+
+    slicing (tampilan daftar)
+
+[33mcommit e6a8cc9a31ada40496c0c53d3158823c8e7d3bc6[m
+Author: akbar mhd <akbarmhd666@gmail.com>
+Date:   Thu Sep 28 13:37:11 2023 +0800
+
+    first commit
