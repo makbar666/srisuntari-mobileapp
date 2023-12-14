@@ -32,43 +32,43 @@ class _HasilQuisState extends State<HasilQuis> {
   List<String> userAnswerOption = [];
   Future<void> generatePdf() async {
     EasyLoading.show(status: 'Generating PDF...'); // Menampilkan dialog
-    // if (_quizResults.isNotEmpty) {
-    //   final lastQuizResult = _quizResults.last;
+    if (_quizResults.isNotEmpty) {
+      final lastQuizResult = _quizResults.last;
 
-    //   if (lastQuizResult.score >= 0 && lastQuizResult.score <= 0) {
-    //     indikator = "Hijau";
-    //     catatan =
-    //         "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
-    //     progressBarColor = Colors.green;
-    //   } else if (lastQuizResult.score >= 1 && lastQuizResult.score <= 19) {
-    //     indikator = "Kuning";
-    //     catatan =
-    //         "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
-    //     progressBarColor = Colors.yellow;
-    //   } else if (lastQuizResult.score >= 20) {
-    //     indikator = "Merah";
-    //     catatan =
-    //         "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
-    //     progressBarColor = Colors.red;
-    //   }
-    // }
-
-    if (widget.nilai >= 0 && widget.nilai <= 0) {
-      indikator = "Hijau";
-      catatan =
-          "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
-      progressBarColor = Colors.green;
-    } else if (widget.nilai >= 1 && widget.nilai <= 19) {
-      indikator = "Kuning";
-      catatan =
-          "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
-      progressBarColor = Colors.yellow;
-    } else if (widget.nilai >= 20) {
-      indikator = "Merah";
-      catatan =
-          "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
-      progressBarColor = Colors.red;
+      if (lastQuizResult.score >= 0 && lastQuizResult.score <= 0) {
+        indikator = "Hijau";
+        catatan =
+            "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+        progressBarColor = Colors.green;
+      } else if (lastQuizResult.score >= 1 && lastQuizResult.score <= 19) {
+        indikator = "Kuning";
+        catatan =
+            "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+        progressBarColor = Colors.yellow;
+      } else if (lastQuizResult.score >= 20) {
+        indikator = "Merah";
+        catatan =
+            "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+        progressBarColor = Colors.red;
+      }
     }
+
+    // if (widget.nilai >= 0 && widget.nilai <= 0) {
+    //   indikator = "Hijau";
+    //   catatan =
+    //       "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+    //   progressBarColor = Colors.green;
+    // } else if (widget.nilai >= 1 && widget.nilai <= 19) {
+    //   indikator = "Kuning";
+    //   catatan =
+    //       "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+    //   progressBarColor = Colors.yellow;
+    // } else if (widget.nilai >= 20) {
+    //   indikator = "Merah";
+    //   catatan =
+    //       "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+    //   progressBarColor = Colors.red;
+    // }
     final pdf = pw.Document();
     pdf.addPage(
       pw.MultiPage(
@@ -381,309 +381,343 @@ class _HasilQuisState extends State<HasilQuis> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.nilai >= 0 && widget.nilai <= 0) {
-      indikator = "Hijau";
-      catatan =
-          "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
-      progressBarColor = Colors.green;
-    } else if (widget.nilai >= 1 && widget.nilai <= 19) {
-      indikator = "Kuning";
-      catatan =
-          "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
-      progressBarColor = Colors.yellow;
-    } else if (widget.nilai >= 20) {
-      indikator = "Merah";
-      catatan =
-          "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
-      progressBarColor = Colors.red;
-    }
+    if (_quizResults.isNotEmpty) {
+      final lastQuizResult = _quizResults.last;
 
-    return Scaffold(
-      backgroundColor: Color(0xFF6B81DE),
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: <Widget>[
-          SliverAppBar(
-            leading: IconButton(
-              icon: Icon(
-                Icons.close,
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.all(10),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeQuiz()),
-                );
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.picture_as_pdf_outlined,
-                  color: Colors.white,
-                ), // Gantilah 'your_icon' dengan ikon yang diinginkan
-                onPressed: () {
-                  // Tindakan yang akan dijalankan ketika ikon diklik
-                  generatePdf();
-                },
-              ),
-            ],
-            backgroundColor: Color(0xFF6B81DE),
-            expandedHeight: 350,
-            floating: false,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                'Hasil Quiz',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+      if (lastQuizResult.score >= 0 && lastQuizResult.score <= 0) {
+        indikator = "Hijau";
+        catatan =
+            "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+        progressBarColor = Colors.green;
+      } else if (lastQuizResult.score >= 1 && lastQuizResult.score <= 19) {
+        indikator = "Kuning";
+        catatan =
+            "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+        progressBarColor = Colors.yellow;
+      } else if (lastQuizResult.score >= 20) {
+        indikator = "Merah";
+        catatan =
+            "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+        progressBarColor = Colors.red;
+      }
+    }
+    // if (widget.nilai >= 0 && widget.nilai <= 0) {
+    //   indikator = "Hijau";
+    //   catatan =
+    //       "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+    //   progressBarColor = Colors.green;
+    // } else if (widget.nilai >= 1 && widget.nilai <= 19) {
+    //   indikator = "Kuning";
+    //   catatan =
+    //       "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+    //   progressBarColor = Colors.yellow;
+    // } else if (widget.nilai >= 20) {
+    //   indikator = "Merah";
+    //   catatan =
+    //       "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+    //   progressBarColor = Colors.red;
+    // }
+
+    return WillPopScope(
+        onWillPop: () async {
+          // Navigasi ke halaman lain saat tombol back ditekan
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeQuiz()),
+          );
+          // Setiap saat pengembalian false akan mencegah tindakan default (pop halaman)
+          return Future.value(false);
+        },
+        child: Scaffold(
+          backgroundColor: Color(0xFF6B81DE),
+          body: CustomScrollView(
+            controller: _scrollController,
+            slivers: <Widget>[
+              SliverAppBar(
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                  padding: EdgeInsets.all(10),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeQuiz()),
+                    );
+                  },
+                ),
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.picture_as_pdf_outlined,
+                      color: Colors.white,
+                    ), // Gantilah 'your_icon' dengan ikon yang diinginkan
+                    onPressed: () {
+                      // Tindakan yang akan dijalankan ketika ikon diklik
+                      generatePdf();
+                    },
+                  ),
+                ],
+                backgroundColor: Color(0xFF6B81DE),
+                expandedHeight: 350,
+                floating: false,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(
+                    'Hasil Quiz',
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  centerTitle: false,
+                  expandedTitleScale: 1,
+                  collapseMode: CollapseMode.parallax,
+                  background: Container(
+                    alignment: Alignment.centerLeft,
+                    padding:
+                        EdgeInsets.only(left: 32.0, top: 52.0, right: 32.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // Mengatur ikon dan teks sejajar ke kiri
+                      children: [
+                        Center(
+                          child: Container(
+                            width: 250,
+                            height: 300,
+                            child:
+                                Image(image: AssetImage("images/family.png")),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              centerTitle: false,
-              expandedTitleScale: 1,
-              collapseMode: CollapseMode.parallax,
-              background: Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(left: 32.0, top: 52.0, right: 32.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment
-                      .start, // Mengatur ikon dan teks sejajar ke kiri
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 250,
-                        height: 300,
-                        child: Image(image: AssetImage("images/family.png")),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 1.0, right: 1.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0)),
-                      child: Container(
-                        height: 400,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(32.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                children: _contacts.map((contact) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 10),
-                                      Text(
-                                        "Hasil Quiz",
-                                        style: TextStyle(
-                                          fontFamily: 'Manrope',
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        "Berikut Adalah Hasil Kuis Kamu",
-                                        style: TextStyle(
-                                          fontFamily: 'Manrope',
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                      SizedBox(height: 30),
-                                      Row(
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 1.0, right: 1.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20.0),
+                              topRight: Radius.circular(20.0)),
+                          child: Container(
+                            height: 400,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(32.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: _contacts.map((contact) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
+                                          SizedBox(height: 10),
                                           Text(
-                                            'Nama Lengkap',
+                                            "Hasil Quiz",
                                             style: TextStyle(
                                               fontFamily: 'Manrope',
-                                              fontSize: 15.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          Text(
-                                            contact
-                                                .nama, // Ganti dengan data yang sesuai dari contact
-                                            style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: 15.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Jenis Kelamin',
-                                            style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: 15.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          Text(
-                                            contact.jenisKelamin ??
-                                                'Jenis Kelamin Tidak Diiisi',
-                                            style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: 15.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Status',
-                                            style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: 15.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          Container(
-                                            width: 15,
-                                            height: 15,
-                                            decoration: BoxDecoration(
-                                              color: progressBarColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            '$indikator',
-                                            style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: 15.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.normal,
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                           SizedBox(height: 10),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
                                           Text(
-                                            'Catatan',
+                                            "Berikut Adalah Hasil Kuis Kamu",
                                             style: TextStyle(
                                               fontFamily: 'Manrope',
-                                              fontSize: 15.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                          border: Border.all(
-                                            color: Colors.grey.shade300,
-                                            width: 2.0,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text(
-                                            '$catatan',
-                                            style: TextStyle(
-                                              fontFamily: 'Manrope',
-                                              fontSize: 15.0,
-                                              color: Colors.black,
+                                              fontSize: 16,
                                               fontWeight: FontWeight.normal,
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }).toList(),
+                                          SizedBox(height: 30),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Nama Lengkap',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              Text(
+                                                contact
+                                                    .nama, // Ganti dengan data yang sesuai dari contact
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Jenis Kelamin',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              Text(
+                                                contact.jenisKelamin ??
+                                                    'Jenis Kelamin Tidak Diiisi',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Status',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              Container(
+                                                width: 15,
+                                                height: 15,
+                                                decoration: BoxDecoration(
+                                                  color: progressBarColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                '$indikator',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              SizedBox(height: 10),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Catatan',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Container(
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey.shade200,
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              border: Border.all(
+                                                color: Colors.grey.shade300,
+                                                width: 2.0,
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Text(
+                                                '$catatan',
+                                                style: TextStyle(
+                                                  fontFamily: 'Manrope',
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                } else {
-                  // Bagian ini untuk SliverList yang berisi ListTile
-                  int adjustedIndex = index - 1;
-                  return ClipRRect(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 1.0, right: 1.0),
-                      child: Container(
-                        color: Colors.white,
+                      );
+                    } else {
+                      // Bagian ini untuk SliverList yang berisi ListTile
+                      int adjustedIndex = index - 1;
+                      return ClipRRect(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-                          child: ListTile(
-                            title: Text(
-                              '${adjustedIndex + 1}.  ${userQuestions[adjustedIndex]}',
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 17,
-                                color: Colors.black,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            subtitle: Text(
-                              'Jawaban: ${userAnswerOption[adjustedIndex]}',
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 17,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                          padding: const EdgeInsets.only(left: 1.0, right: 1.0),
+                          child: Container(
+                            color: Colors.white,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 4.0, right: 4.0),
+                              child: ListTile(
+                                title: Text(
+                                  '${adjustedIndex + 1}.  ${userQuestions[adjustedIndex]}',
+                                  style: TextStyle(
+                                    fontFamily: 'Manrope',
+                                    fontSize: 17,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Jawaban: ${userAnswerOption[adjustedIndex]}',
+                                  style: TextStyle(
+                                    fontFamily: 'Manrope',
+                                    fontSize: 17,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }
-              },
-              childCount: userQuestions.length +
-                  1, // Jangan lupa tambahkan 1 untuk bagian informasi kontak
-            ),
+                      );
+                    }
+                  },
+                  childCount: userQuestions.length +
+                      1, // Jangan lupa tambahkan 1 untuk bagian informasi kontak
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
