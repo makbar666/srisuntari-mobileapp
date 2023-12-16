@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:srisuntari_mobileapp/HISTORY/riwayat_pdf.dart';
 import 'package:srisuntari_mobileapp/hasil/review_quis.dart';
 import 'package:srisuntari_mobileapp/home/home_quiz.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
@@ -24,51 +25,33 @@ class HasilQuis extends StatefulWidget {
 
 class _HasilQuisState extends State<HasilQuis> {
   List<UserData> _contacts = [];
-
+  QuizBrain quizBrain = QuizBrain();
   final dbHelper = DatabaseHelper();
   List<QuizResult> _quizResults = [];
   List<String> userQuestions = [];
+
   List<bool> userAnswers = [];
+  int nilai = 0;
   List<String> userAnswerOption = [];
   Future<void> generatePdf() async {
     EasyLoading.show(status: 'Generating PDF...'); // Menampilkan dialog
-    if (_quizResults.isNotEmpty) {
-      final lastQuizResult = _quizResults.last;
 
-      if (lastQuizResult.score >= 0 && lastQuizResult.score <= 0) {
-        indikator = "Hijau";
-        catatan =
-            "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
-        progressBarColor = Colors.green;
-      } else if (lastQuizResult.score >= 1 && lastQuizResult.score <= 19) {
-        indikator = "Kuning";
-        catatan =
-            "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
-        progressBarColor = Colors.yellow;
-      } else if (lastQuizResult.score >= 20) {
-        indikator = "Merah";
-        catatan =
-            "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
-        progressBarColor = Colors.red;
-      }
+    if (widget.nilai == 0) {
+      indikator = "Hijau";
+      catatan =
+          "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+      progressBarColor = Colors.green;
+    } else if (widget.nilai >= 1 && widget.nilai <= 19) {
+      indikator = "Kuning";
+      catatan =
+          "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+      progressBarColor = Colors.yellow;
+    } else if (widget.nilai >= 20) {
+      indikator = "Merah";
+      catatan =
+          "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+      progressBarColor = Colors.red;
     }
-
-    // if (widget.nilai >= 0 && widget.nilai <= 0) {
-    //   indikator = "Hijau";
-    //   catatan =
-    //       "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
-    //   progressBarColor = Colors.green;
-    // } else if (widget.nilai >= 1 && widget.nilai <= 19) {
-    //   indikator = "Kuning";
-    //   catatan =
-    //       "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
-    //   progressBarColor = Colors.yellow;
-    // } else if (widget.nilai >= 20) {
-    //   indikator = "Merah";
-    //   catatan =
-    //       "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
-    //   progressBarColor = Colors.red;
-    // }
     final pdf = pw.Document();
     pdf.addPage(
       pw.MultiPage(
@@ -296,22 +279,46 @@ class _HasilQuisState extends State<HasilQuis> {
         },
       ),
     );
-
-    // Ganti lokasi penyimpanan ke direktori eksternal
-    final externalDirectory = await getExternalStorageDirectory();
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final file = File('${externalDirectory!.path}/Srisuntari_$timestamp.pdf');
-    await file.writeAsBytes(await pdf.save());
-    EasyLoading.dismiss();
-    if (await file.exists()) {
-      print('File PDF berhasil disimpan di: ${file.path}');
-      // Buka file tersebut dengan OpenFile
-      OpenFile.open(file.path);
-    } else {
-      print('Gagal menyimpan file PDF.');
-    }
+    // final externalDirectory = await getExternalStorageDirectory();
+    // // final timestamp = DateTime.now().millisecondsSinceEpoch;
+    // final file = File('${externalDirectory!.path}/Srisuntari.pdf');
+    // await file.writeAsBytes(await pdf.save());
+    // EasyLoading.dismiss();
+    // if (await file.exists()) {
+    //   print('File PDF berhasil disimpan di: ${file.path}');
+    //   // Buka file tersebut dengan OpenFile
+    //   OpenFile.open(file.path);
+    // } else {
+    //   print('Gagal menyimpan file PDF.');
+    // }
     // Setelah file PDF dibuat, buka file tersebut dengan OpenFile
     // OpenFile.open(file.path);
+    //Download
+    try {
+      final fileDirectory =
+          Directory('/storage/emulated/0/Download/Srisuntari');
+      if (!await fileDirectory.exists()) {
+        await fileDirectory.create(recursive: true);
+      }
+
+      final fileName =
+          'Quiz_${_contacts.map((contact) => contact.nama).join('_')}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+      final file = File('${fileDirectory.path}/$fileName');
+
+      await file.writeAsBytes(await pdf.save());
+      EasyLoading.dismiss();
+
+      if (await file.exists()) {
+        print('File PDF berhasil disimpan di: ${file.path}');
+        OpenFile.open(file.path);
+        showSaveSuccessDialog(context);
+      } else {
+        print('Gagal menyimpan file PDF.');
+      }
+    } catch (e) {
+      print('Terjadi kesalahan: $e');
+      EasyLoading.dismiss();
+    }
   }
 
   ScrollController _scrollController = ScrollController();
@@ -376,47 +383,47 @@ class _HasilQuisState extends State<HasilQuis> {
   }
 
   String indikator = "Hijau";
-  String catatan = "Anda Masih Sehat";
+  String catatan = "Error";
   Color progressBarColor = Colors.green;
 
   @override
   Widget build(BuildContext context) {
-    if (_quizResults.isNotEmpty) {
-      final lastQuizResult = _quizResults.last;
+    // if (_quizResults.isNotEmpty) {
+    //   final lastQuizResult = _quizResults.last;
 
-      if (lastQuizResult.score >= 0 && lastQuizResult.score <= 0) {
-        indikator = "Hijau";
-        catatan =
-            "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
-        progressBarColor = Colors.green;
-      } else if (lastQuizResult.score >= 1 && lastQuizResult.score <= 19) {
-        indikator = "Kuning";
-        catatan =
-            "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
-        progressBarColor = Colors.yellow;
-      } else if (lastQuizResult.score >= 20) {
-        indikator = "Merah";
-        catatan =
-            "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
-        progressBarColor = Colors.red;
-      }
+    //   if (lastQuizResult.score >= 0 && lastQuizResult.score <= 0) {
+    //     indikator = "Hijau";
+    //     catatan =
+    //         "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+    //     progressBarColor = Colors.green;
+    //   } else if (lastQuizResult.score >= 1 && lastQuizResult.score <= 19) {
+    //     indikator = "Kuning";
+    //     catatan =
+    //         "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+    //     progressBarColor = Colors.yellow;
+    //   } else if (lastQuizResult.score >= 20) {
+    //     indikator = "Merah";
+    //     catatan =
+    //         "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+    //     progressBarColor = Colors.red;
+    //   }
+
+    if (widget.nilai == 0) {
+      indikator = "Hijau";
+      catatan =
+          "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
+      progressBarColor = Colors.green;
+    } else if (widget.nilai >= 1 && widget.nilai <= 19) {
+      indikator = "Kuning";
+      catatan =
+          "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
+      progressBarColor = Colors.yellow;
+    } else if (widget.nilai >= 20) {
+      indikator = "Merah";
+      catatan =
+          "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
+      progressBarColor = Colors.red;
     }
-    // if (widget.nilai >= 0 && widget.nilai <= 0) {
-    //   indikator = "Hijau";
-    //   catatan =
-    //       "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
-    //   progressBarColor = Colors.green;
-    // } else if (widget.nilai >= 1 && widget.nilai <= 19) {
-    //   indikator = "Kuning";
-    //   catatan =
-    //       "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
-    //   progressBarColor = Colors.yellow;
-    // } else if (widget.nilai >= 20) {
-    //   indikator = "Merah";
-    //   catatan =
-    //       "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
-    //   progressBarColor = Colors.red;
-    // }
 
     return WillPopScope(
         onWillPop: () async {
@@ -439,7 +446,7 @@ class _HasilQuisState extends State<HasilQuis> {
                     Icons.close,
                     color: Colors.white,
                   ),
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(3),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -448,15 +455,36 @@ class _HasilQuisState extends State<HasilQuis> {
                   },
                 ),
                 actions: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.picture_as_pdf_outlined,
-                      color: Colors.white,
-                    ), // Gantilah 'your_icon' dengan ikon yang diinginkan
-                    onPressed: () {
-                      // Tindakan yang akan dijalankan ketika ikon diklik
-                      generatePdf();
-                    },
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.history,
+                          color: Colors.white,
+                        ), // Gantilah 'your_icon' dengan ikon yang diinginkan
+                        onPressed: () {
+                          // Tindakan yang akan dijalankan ketika ikon diklik
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HistoryScreen(
+                                  directoryPath:
+                                      '/storage/emulated/0/Download/Srisuntari'),
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.save,
+                          color: Colors.white,
+                        ), // Gantilah 'your_icon' dengan ikon yang diinginkan
+                        onPressed: () {
+                          // Tindakan yang akan dijalankan ketika ikon diklik
+                          generatePdf();
+                        },
+                      ),
+                    ],
                   ),
                 ],
                 backgroundColor: Color(0xFF6B81DE),
@@ -720,4 +748,48 @@ class _HasilQuisState extends State<HasilQuis> {
           ),
         ));
   }
+}
+
+void showSaveSuccessDialog(context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_circle_outline,
+                color: Colors.green,
+                size: 100.0,
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                'File Berhasil disimpan Silahkan Lihat di Riwayat Quis',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+      );
+    },
+  );
 }

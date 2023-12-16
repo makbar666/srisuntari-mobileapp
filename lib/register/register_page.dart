@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:srisuntari_mobileapp/HISTORY/riwayat_pdf.dart';
 import 'package:srisuntari_mobileapp/HISTORY/riwayat_quis.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/user_data.dart';
@@ -163,7 +164,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RiwayatQuiz(),
+                          builder: (context) => HistoryScreen(
+                              directoryPath:
+                                  '/storage/emulated/0/Download/Srisuntari'),
                         ),
                       );
                     },

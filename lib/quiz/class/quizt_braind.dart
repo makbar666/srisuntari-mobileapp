@@ -8,14 +8,12 @@ class QuizBrain {
   int ageMonths = 0;
   int _quistotal = 0;
   String gender = "0";
-  int score = 0;
   List<String> userQuestions = [];
   List<String> userAnswerOption = [];
   List<int> userAnswers = [];
   List<Question> allQuestions = [];
   int get questionNumber => _questionNumber;
   int get quistotal => _quistotal;
-  int get _score => score;
   Future<void> initializeQuiz() async {
     await initializeQuestions();
   }
@@ -1569,6 +1567,28 @@ class QuizBrain {
         _questionNumber = jumpToQuestionIndices[0];
       }
     }
+  }
+
+  int calculateUserScore() {
+    Map<int, int> scoreCount = Map();
+
+    for (int i = 0; i < userQuestions.length; i++) {
+      int score = currentQuestionList[i].scores[userAnswers[i]];
+      scoreCount[score] = (scoreCount[score] ?? 0) + 1;
+    }
+
+    print('\nScore Summary:');
+    scoreCount.forEach((score, count) {
+      print('Score $score: $count');
+    });
+
+    // Menghitung total skor
+    int totalScore = scoreCount.entries
+        .fold(0, (acc, entry) => acc + (entry.key * entry.value));
+
+    print('Total Score: $totalScore');
+
+    return totalScore;
   }
 
   Future<void> printUserAnswers() async {

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/quiz_result.dart';
 import 'package:srisuntari_mobileapp/register/register_page.dart';
@@ -13,6 +14,21 @@ class HomeQuiz extends StatefulWidget {
 
 class _HomeQuizState extends State<HomeQuiz> {
   List<QuizResult> quizResults = [];
+
+  Future<void> createDirectory() async {
+    try {
+      final Directory directory =
+          Directory('/storage/emulated/0/Download/Srisuntari');
+      if (await directory.exists()) {
+        print('Directory already exists: ${directory.path}');
+      } else {
+        await directory.create(recursive: true);
+        print('Directory created: ${directory.path}');
+      }
+    } catch (e) {
+      print('Error creating directory: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +75,7 @@ class _HomeQuizState extends State<HomeQuiz> {
                     Container(
                       width: 300,
                       child: Text(
-                        'Aplikasi ini blblblblblbllblblbBLBLBLBLBLBLBL',
+                        'Aplikasi ini digunakan untuk mendeteksi kondisi anak dan memberikan pemantauan cepat oleh Orang Tua',
                         textAlign: TextAlign
                             .center, // Atur rata tengah secara horizontal
                         style: TextStyle(
@@ -82,13 +98,14 @@ class _HomeQuizState extends State<HomeQuiz> {
                       ),
                       height: 52,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => RegisterPage(),
                             ),
                           );
+                          await createDirectory();
                         },
                         child: Text(
                           "Mulai Kuis",
@@ -118,7 +135,7 @@ class _HomeQuizState extends State<HomeQuiz> {
                       ),
                     ),
                     Text(
-                      '@Copyright 2024',
+                      '@Copyright 2023',
                       style: TextStyle(
                         fontSize: 13,
                         fontFamily: 'Manrope',

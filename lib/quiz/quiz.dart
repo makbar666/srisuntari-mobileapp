@@ -23,7 +23,7 @@ class _quizState extends State<quiz> {
   int nilai = 0;
   int totalQuestions = 1;
   QuizBrain quizBrain = QuizBrain();
-
+  int totalSkorKuis = 0; // Tambahkan variabel totalSkorKuis
   bool isLoading = true; // Tambahkan variabel loading
   @override
   void initState() {
@@ -45,6 +45,19 @@ class _quizState extends State<quiz> {
     }
   }
 
+// Fungsi untuk mengecek dan menampilkan hasil
+  void checkResult(int totalScore) {
+    if (quizBrain.isFinished()) {
+      // Tampilkan hasil kuis jika sudah selesai
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return HasilQuis(
+          quizBrain: quizBrain,
+          nilai: totalScore, // Gunakan totalScore sebagai parameter nilai
+        );
+      }));
+    }
+  }
+
   void checkAnswer(int selectedAnswerIndex) {
     List<int> userAnswers = quizBrain.userAnswers;
     int score = quizBrain.currentQuestionList[quizBrain.questionNumber]
@@ -57,24 +70,6 @@ class _quizState extends State<quiz> {
       if (quizBrain.isFinished()) {
         quizBrain.printUserAnswers();
         // QuizResult quizResult = QuizResult(
-        //   score: nilai,
-        //   date: DateTime.now().toIso8601String(),
-        // );
-
-        // dbHelper.saveQuizResult(quizResult);
-
-        // printQuizfromDB();
-
-        // Check the status based on the count of specific scores
-        // print(userAnswers);
-        // int countScore0 = userAnswers.where((score) => score == 0).length;
-        // int countScore20 = userAnswers.where((score) => score == 20).length;
-
-        // if (countScore0 >= 4) {
-        //   print('Status Hijau');
-        // } else if (countScore20 >= 4) {
-        //   print('Status Merah');
-        // }
 
         Alert(
           context: context,
@@ -87,7 +82,7 @@ class _quizState extends State<quiz> {
           nilai += score;
         }
         quizBrain.checksoal(selectedAnswerIndex);
-        totalQuestions++;
+        totalSkorKuis += score;
         quizBrain.nextQuestion();
       }
     });
@@ -261,7 +256,7 @@ class _quizState extends State<quiz> {
                               MaterialPageRoute(builder: (context) {
                             return HasilQuis(
                               quizBrain: quizBrain,
-                              nilai: nilai,
+                              nilai: totalSkorKuis,
                             );
                           }));
                         }
