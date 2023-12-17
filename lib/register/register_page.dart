@@ -159,14 +159,30 @@ class _RegisterPageState extends State<RegisterPage> {
                       Icons.history,
                       color: Colors.white,
                       size: 26,
-                    ), // Gantilah 'your_icon' dengan ikon yang diinginkan
-                    onPressed: () {
+                    ),
+                    onPressed: () async {
+                      String primaryDirectoryPath =
+                          '/storage/emulated/0/Download';
+                      String fallbackDirectoryPath =
+                          '/storage/emulated/0/Download/Srisuntari'; // Gantilah dengan path fallback yang diinginkan
+
+                      // Tentukan folder yang akan digunakan
+                      String directoryPath = primaryDirectoryPath;
+
+                      // Cek apakah folder utama ada
+                      Directory primaryDirectory =
+                          Directory(primaryDirectoryPath);
+                      if (!(await primaryDirectory.exists())) {
+                        // Jika folder utama tidak ditemukan, gunakan folder fallback
+                        directoryPath = fallbackDirectoryPath;
+                      }
+
+                      // Navigasi ke HistoryScreen dengan directoryPath yang sudah ditentukan
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HistoryScreen(
-                              directoryPath:
-                                  '/storage/emulated/0/Download/Srisuntari'),
+                          builder: (context) =>
+                              HistoryScreen(directoryPath: directoryPath),
                         ),
                       );
                     },

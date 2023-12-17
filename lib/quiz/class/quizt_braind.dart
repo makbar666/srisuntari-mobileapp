@@ -141,14 +141,14 @@ class QuizBrain {
         0), //11
 
     // jump 2
-    Question('Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+    Question('Apakah anak anda  mendapat Imunisasi bulan ini ?',
         ['Ya', 'Tidak'], [0, 20], 0,
         jumpToQuestionIndices: {
           0: [11],
           1: [12],
         }), //12
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Sesuai waktu imunisasi',
           'b. Tidak sesuai waktu imunisasi',
@@ -160,7 +160,7 @@ class QuizBrain {
           1: [13],
         }), //13
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Belum waktu imunisasi',
           'b. Imunisasi sudah lengkap',
@@ -348,14 +348,14 @@ class QuizBrain {
         0), //jumper
 
     // jump 2
-    Question('Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+    Question('Apakah anak anda  mendapat Imunisasi bulan ini ?',
         ['Ya', 'Tidak'], [0, 20], 0,
         jumpToQuestionIndices: {
           0: [11],
           1: [12],
         }), //8
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Sesuai waktu imunisasi',
           'b. Tidak sesuai waktu imunisasi',
@@ -367,7 +367,7 @@ class QuizBrain {
           1: [13],
         }), //jumper
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Belum waktu imunisasi',
           'b. Imunisasi sudah lengkap',
@@ -562,14 +562,14 @@ class QuizBrain {
         0), //jumper
 
     // jump 2
-    Question('Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+    Question('Apakah anak anda  mendapat Imunuisasi bulan ini ?',
         ['Ya', 'Tidak'], [0, 20], 0,
         jumpToQuestionIndices: {
           0: [11],
           1: [12],
         }), //8
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Sesuai waktu imunisasi',
           'b. Tidak sesuai waktu imunisasi',
@@ -581,7 +581,7 @@ class QuizBrain {
           1: [13],
         }), //jumper
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Belum waktu imunisasi',
           'b. Imunisasi sudah lengkap',
@@ -776,14 +776,14 @@ class QuizBrain {
         0), //jumper
 
     // jump 2
-    Question('Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+    Question('Apakah anak anda  mendapat Imunisasi bulan ini ?',
         ['Ya', 'Tidak'], [0, 20], 0,
         jumpToQuestionIndices: {
           0: [11],
           1: [12],
         }), //8
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Sesuai waktu imunisasi',
           'b. Tidak sesuai waktu imunisasi',
@@ -795,7 +795,7 @@ class QuizBrain {
           1: [13],
         }), //jumper
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Belum waktu imunisasi',
           'b. Imunisasi sudah lengkap',
@@ -990,14 +990,14 @@ class QuizBrain {
         0), //jumper
 
     // jump 2
-    Question('Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+    Question('Apakah anak anda  mendapat Imunuisasi bulan ini ?',
         ['Ya', 'Tidak'], [0, 20], 0,
         jumpToQuestionIndices: {
           0: [11],
           1: [12],
         }), //8
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Sesuai waktu imunisasi',
           'b. Tidak sesuai waktu imunisasi',
@@ -1009,7 +1009,7 @@ class QuizBrain {
           1: [13],
         }), //jumper
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Belum waktu imunisasi',
           'b. Imunisasi sudah lengkap',
@@ -1204,14 +1204,14 @@ class QuizBrain {
         0), //jumper
 
     // jump 2
-    Question('Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+    Question('Apakah anak anda  mendapat Imunisasi bulan ini ?',
         ['Ya', 'Tidak'], [0, 20], 0,
         jumpToQuestionIndices: {
           0: [11],
           1: [12],
         }), //8
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Sesuai waktu imunisasi',
           'b. Tidak sesuai waktu imunisasi',
@@ -1223,7 +1223,7 @@ class QuizBrain {
           1: [13],
         }), //jumper
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Belum waktu imunisasi',
           'b. Imunisasi sudah lengkap',
@@ -1402,14 +1402,14 @@ class QuizBrain {
         0), //jumper
 
     // jump 2
-    Question('Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+    Question('Apakah anak anda  mendapat Imunisasi bulan ini ?',
         ['Ya', 'Tidak'], [0, 20], 0,
         jumpToQuestionIndices: {
           0: [11],
           1: [12],
         }), //8
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Sesuai waktu imunisasi',
           'b. Tidak sesuai waktu imunisasi',
@@ -1421,7 +1421,7 @@ class QuizBrain {
           1: [13],
         }), //jumper
     Question(
-        'Apakah anak anda  mendapat Imnuisasi bulan ini ?',
+        'Apakah anak anda  mendapat Imunisasi bulan ini ?',
         [
           'a. Belum waktu imunisasi',
           'b. Imunisasi sudah lengkap',

@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:srisuntari_mobileapp/models/database_helper.dart';
 import 'package:srisuntari_mobileapp/models/quiz_result.dart';
 import 'package:srisuntari_mobileapp/register/register_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeQuiz extends StatefulWidget {
   const HomeQuiz({Key? key}) : super(key: key);
@@ -105,7 +106,21 @@ class _HomeQuizState extends State<HomeQuiz> {
                               builder: (context) => RegisterPage(),
                             ),
                           );
-                          await createDirectory();
+                          // Memeriksa status izin
+                          PermissionStatus status =
+                              await Permission.storage.status;
+
+                          if (status.isDenied) {
+                            // Menampilkan dialog atau pesan untuk meminta izin
+                            await Permission.storage.request();
+                          } else if (status.isPermanentlyDenied) {
+                            // Menampilkan pesan untuk membuka pengaturan aplikasi
+                            showSettingsDialog(context);
+                          } else {
+                            // Akses ke penyimpanan diizinkan, lanjutkan dengan operasi yang diinginkan
+                            // ...
+                          }
+                          await createDirectory(); // Membuat Folder Srisuntari
                         },
                         child: Text(
                           "Mulai Kuis",
@@ -149,6 +164,28 @@ class _HomeQuizState extends State<HomeQuiz> {
             ),
           ),
         ));
+  }
+
+  // Menampilkan dialog untuk membuka pengaturan aplikasi
+  void showSettingsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Izin Penyimpanan Dibutuhkan'),
+          content: Text('Buka pengaturan untuk mengaktifkan izin penyimpanan.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                openAppSettings(); // Membuka pengaturan aplikasi
+              },
+              child: Text('Buka Pengaturan'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<dynamic> _showQuitConfirmationDialog(BuildContext context) async {

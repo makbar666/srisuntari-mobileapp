@@ -34,7 +34,7 @@ class _HasilQuisState extends State<HasilQuis> {
   int nilai = 0;
   List<String> userAnswerOption = [];
   Future<void> generatePdf() async {
-    EasyLoading.show(status: 'Generating PDF...'); // Menampilkan dialog
+    // EasyLoading.show(status: 'Generating PDF...'); // Menampilkan dialog
 
     if (widget.nilai == 0) {
       indikator = "Hijau";
@@ -279,21 +279,6 @@ class _HasilQuisState extends State<HasilQuis> {
         },
       ),
     );
-    // final externalDirectory = await getExternalStorageDirectory();
-    // // final timestamp = DateTime.now().millisecondsSinceEpoch;
-    // final file = File('${externalDirectory!.path}/Srisuntari.pdf');
-    // await file.writeAsBytes(await pdf.save());
-    // EasyLoading.dismiss();
-    // if (await file.exists()) {
-    //   print('File PDF berhasil disimpan di: ${file.path}');
-    //   // Buka file tersebut dengan OpenFile
-    //   OpenFile.open(file.path);
-    // } else {
-    //   print('Gagal menyimpan file PDF.');
-    // }
-    // Setelah file PDF dibuat, buka file tersebut dengan OpenFile
-    // OpenFile.open(file.path);
-    //Download
     try {
       final fileDirectory =
           Directory('/storage/emulated/0/Download/Srisuntari');
@@ -306,7 +291,7 @@ class _HasilQuisState extends State<HasilQuis> {
       final file = File('${fileDirectory.path}/$fileName');
 
       await file.writeAsBytes(await pdf.save());
-      EasyLoading.dismiss();
+      // EasyLoading.dismiss();
 
       if (await file.exists()) {
         print('File PDF berhasil disimpan di: ${file.path}');
@@ -314,6 +299,26 @@ class _HasilQuisState extends State<HasilQuis> {
         showSaveSuccessDialog(context);
       } else {
         print('Gagal menyimpan file PDF.');
+        //jika gagal menyimpan maka dialihkan ke Folder Download
+        final fileDirectory = Directory('/storage/emulated/0/Download');
+        if (!await fileDirectory.exists()) {
+          await fileDirectory.create(recursive: true);
+        }
+
+        final fileName =
+            'Quiz_${_contacts.map((contact) => contact.nama).join('_')}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+        final file = File('${fileDirectory.path}/$fileName');
+
+        await file.writeAsBytes(await pdf.save());
+        // EasyLoading.dismiss();
+
+        if (await file.exists()) {
+          print('File PDF berhasil disimpan di: ${file.path}');
+          OpenFile.open(file.path);
+          showSaveSuccessDialog(context);
+        } else {
+          print('Gagal menyimpan file PDF.');
+        }
       }
     } catch (e) {
       print('Terjadi kesalahan: $e');
@@ -388,26 +393,6 @@ class _HasilQuisState extends State<HasilQuis> {
 
   @override
   Widget build(BuildContext context) {
-    // if (_quizResults.isNotEmpty) {
-    //   final lastQuizResult = _quizResults.last;
-
-    //   if (lastQuizResult.score >= 0 && lastQuizResult.score <= 0) {
-    //     indikator = "Hijau";
-    //     catatan =
-    //         "Anak anda beresiko Stunting, jika tidak dilakukan pemantauan pertumbuhan dan perkembangan secara rutin setiap bulan";
-    //     progressBarColor = Colors.green;
-    //   } else if (lastQuizResult.score >= 1 && lastQuizResult.score <= 19) {
-    //     indikator = "Kuning";
-    //     catatan =
-    //         "Anak anda beresiko Stunting, perlu pemantauan pertumbuhan dan perkembangan di Posyandu";
-    //     progressBarColor = Colors.yellow;
-    //   } else if (lastQuizResult.score >= 20) {
-    //     indikator = "Merah";
-    //     catatan =
-    //         "Anak anda beresiko Stunting, perlu dilakukan intervensi Segera ke Puskesmas Terdekat";
-    //     progressBarColor = Colors.red;
-    //   }
-
     if (widget.nilai == 0) {
       indikator = "Hijau";
       catatan =
@@ -769,7 +754,7 @@ void showSaveSuccessDialog(context) {
               ),
               SizedBox(height: 16.0),
               Text(
-                'File Berhasil disimpan Silahkan Lihat di Riwayat Quis',
+                'File Berhasil disimpan Silahkan Lihat di Riwayat Kuis',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

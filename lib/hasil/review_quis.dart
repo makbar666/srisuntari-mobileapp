@@ -114,7 +114,7 @@ class _ReviewQuizState extends State<ReviewQuiz> {
                   Row(
                     children: [
                       Text(
-                        'Nama Lengwkap',
+                        'Nama Lengkap',
                         style: TextStyle(
                           fontFamily: 'Manrope',
                           fontSize: 17,
@@ -489,14 +489,6 @@ class _ReviewQuizState extends State<ReviewQuiz> {
                                 color: PdfColors.black,
                               ),
                             ),
-                            // pw.Text(
-                            //   'Jawaban: ${userAnswers[index] ? 'Iya' : 'Tidak'}',
-                            //   style: pw.TextStyle(
-                            //     font: pw.Font.helveticaBold(),
-                            //     fontSize: 15,
-                            //     color: PdfColors.black,
-                            //   ),
-                            // ),
                             pw.SizedBox(height: 3)
                           ],
                         );
