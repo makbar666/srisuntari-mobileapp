@@ -299,26 +299,6 @@ class _HasilQuisState extends State<HasilQuis> {
         showSaveSuccessDialog(context);
       } else {
         print('Gagal menyimpan file PDF.');
-        //jika gagal menyimpan maka dialihkan ke Folder Download
-        final fileDirectory = Directory('/storage/emulated/0/Download');
-        if (!await fileDirectory.exists()) {
-          await fileDirectory.create(recursive: true);
-        }
-
-        final fileName =
-            'Quiz_${_contacts.map((contact) => contact.nama).join('_')}_${DateTime.now().millisecondsSinceEpoch}.pdf';
-        final file = File('${fileDirectory.path}/$fileName');
-
-        await file.writeAsBytes(await pdf.save());
-        // EasyLoading.dismiss();
-
-        if (await file.exists()) {
-          print('File PDF berhasil disimpan di: ${file.path}');
-          OpenFile.open(file.path);
-          showSaveSuccessDialog(context);
-        } else {
-          print('Gagal menyimpan file PDF.');
-        }
       }
     } catch (e) {
       print('Terjadi kesalahan: $e');

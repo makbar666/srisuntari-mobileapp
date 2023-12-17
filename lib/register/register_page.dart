@@ -161,28 +161,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       size: 26,
                     ),
                     onPressed: () async {
-                      String primaryDirectoryPath =
-                          '/storage/emulated/0/Download';
-                      String fallbackDirectoryPath =
-                          '/storage/emulated/0/Download/Srisuntari'; // Gantilah dengan path fallback yang diinginkan
-
-                      // Tentukan folder yang akan digunakan
-                      String directoryPath = primaryDirectoryPath;
-
-                      // Cek apakah folder utama ada
-                      Directory primaryDirectory =
-                          Directory(primaryDirectoryPath);
-                      if (!(await primaryDirectory.exists())) {
-                        // Jika folder utama tidak ditemukan, gunakan folder fallback
-                        directoryPath = fallbackDirectoryPath;
-                      }
-
-                      // Navigasi ke HistoryScreen dengan directoryPath yang sudah ditentukan
+                      // Tindakan yang akan dijalankan ketika ikon diklik
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              HistoryScreen(directoryPath: directoryPath),
+                          builder: (context) => HistoryScreen(
+                              directoryPath:
+                                  '/storage/emulated/0/Download/Srisuntari'),
                         ),
                       );
                     },

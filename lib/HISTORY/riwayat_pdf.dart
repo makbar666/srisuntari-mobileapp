@@ -60,8 +60,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   final fileName = snapshot.data![index].path
                       .split('/')
                       .last; // Dapatkan nama file saja
-                  // Ubah urutan indeks untuk membalik urutan daftar
-                  final reversedIndex = snapshot.data!.length - 1 - index;
+                  // // Ubah urutan indeks untuk membalik urutan daftar
+                  // final reversedIndex = snapshot.data!.length - 1 - index;
                   return Padding(
                     padding: const EdgeInsets.only(
                       top: 7.0,
@@ -77,8 +77,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                       ),
                       onPressed: () {
-                        navigateToPDFViewer(
-                            context, snapshot.data![reversedIndex]);
+                        navigateToPDFViewer(context, snapshot.data![index]);
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -189,23 +188,50 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Future<List<File>> getPDFFiles() async {
     Directory directory = Directory(widget.directoryPath);
+
+    if (!directory.existsSync()) {
+      print('Direktori tidak ditemukan: ${widget.directoryPath}');
+      return []; // Kembalikan daftar kosong jika direktori tidak ada
+    }
+
     List<File> pdfFiles = [];
     var files = directory.listSync();
-    // Urutkan berdasarkan tanggal modifikasi file (terbaru ke terlama)
-    files.sort(
-        (a, b) => (b.statSync().modified.compareTo(a.statSync().modified)));
-
-    if (directory.existsSync()) {
-      var files = directory.listSync();
-      for (var file in files) {
-        if (file is File && file.path.endsWith('.pdf')) {
-          pdfFiles.add(file);
-        }
+    // Sortir file berdasarkan waktu modifikasi (terbaru hingga terlama)
+    files.sort((a, b) {
+      var aTime = (a.statSync().modified as DateTime).millisecondsSinceEpoch;
+      var bTime = (b.statSync().modified as DateTime).millisecondsSinceEpoch;
+      return bTime.compareTo(aTime);
+    });
+    for (var file in files) {
+      if (file is File && file.path.endsWith('.pdf')) {
+        pdfFiles.add(file);
       }
     }
 
+    print('Jumlah file PDF: ${pdfFiles.length}');
+
     return pdfFiles;
   }
+
+  // Future<List<File>> getPDFFiles() async {
+  //   Directory directory = Directory(widget.directoryPath);
+  //   List<File> pdfFiles = [];
+  //   var files = directory.listSync();
+  //   // Urutkan berdasarkan tanggal modifikasi file (terbaru ke terlama)
+  //   files.sort(
+  //       (a, b) => (b.statSync().modified.compareTo(a.statSync().modified)));
+
+  //   if (directory.existsSync()) {
+  //     var files = directory.listSync();
+  //     for (var file in files) {
+  //       if (file is File && file.path.endsWith('.pdf')) {
+  //         pdfFiles.add(file);
+  //       }
+  //     }
+  //   }
+
+  //   return pdfFiles;
+  // }
 
   void navigateToPDFViewer(BuildContext context, File pdfFile) {
     Navigator.push(
